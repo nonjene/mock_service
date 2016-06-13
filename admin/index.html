@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title></title>
     <link href="jsoneditor.css" rel="stylesheet" type="text/css">
+    <link href="/build/indexedDB.css" rel="stylesheet" type="text/css">
     <script src="jsoneditor.js"></script>
     <style>
         #flex-container {
@@ -45,11 +46,17 @@
                 <button type="submit">发送</button>
             </form>
         </div>
-        <div class="raw-item">Flex box (click to toggle raw box)</div>
+        <div class="raw-item">
+            <div id="list">
+
+            </div>
+        </div>
         <div class="raw-item"><div id="log"></div></div>
     </div>
     <script src="ws.js">
     </script>
+    <script type="text/javascript" src="/build/vendors.js"></script>
+    <script type="text/javascript" src="/build/indexedDB.bundle.js"></script>
 </body>
 
 </html>

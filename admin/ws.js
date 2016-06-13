@@ -23,6 +23,9 @@ function o(el) {
     data.body = editor.get();
     ws.send(JSON.stringify(data));
 }
+function o_import(json){
+    editor.set( json );
+}
 ws.onmessage = function(data) {
     console.log(data.data);
     document.querySelector("#log").innerHTML += "<br>" + htmlToText(data.data);

@@ -1,0 +1,68 @@
+.dbWrap{
+    margin: 20px;
+}
+.dbMsg{
+    margin: 0 8px;
+}
+.handleBar{
+    margin:20px 8px;
+}
+
+.cardWrap{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+.editorPaper{
+    width: 400px;
+    margin: 12px;
+    padding: 10px 10px 60px 10px;
+    position: relative;
+    header{
+        padding-bottom:10px;
+    }
+    footer{
+        position: absolute;
+        bottom:0;
+        right:0;
+        width:100%;
+        height:60px;
+        padding:12px;
+        text-align: right;
+
+    }
+}
+.editorWrap{
+
+    border: 1px solid #ddd;
+    //box-shadow: 0 6px 20px -3px rgba(0,0,0,.15);
+    //min-height:200px;
+
+    font-size:14px;
+    :global{
+        .jsoneditor,div.jsoneditor-tree{
+            font-family: "PingFang SC";
+            min-height:180px;
+        }
+    }
+}
+.textarea{
+    height: 100%;
+    width:100%;
+    outline:none;
+    border:0;
+    font-family: "PingFang SC";
+    padding: 12px;
+    font-size: 14px;
+
+}
+.cardBtn{
+    margin:0 8px;
+}
+
+:global {
+    .RichEditor-root, .RichEditor-editor, .RichEditor-editorRichEditor-hidePlaceholder {
+        height: inherit;
+        text-align: initial;
+    }
+}

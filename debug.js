@@ -52,7 +52,7 @@ function debug(wsOpt,redisOpt){
     const Koa = require('koa');
     const admin = new Koa();
     admin.use(serve(__dirname + '/admin/'));
-    admin.listen(8080);
+    admin.listen(8081);
     const wss = initWSS(admin,wsOpt);
     wss.on('connection', function connection(ws) {
         ws.on('message', function(data) {
