@@ -1,7 +1,6 @@
 import React from 'react';
 
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+
 
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
@@ -11,6 +10,9 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+
+import genID from './gen-id';
+
 
 const iconButtonElement = (
     <IconButton
@@ -25,7 +27,7 @@ export class Item extends React.Component {
     constructor( props ) {
         super( props );
         this.state = {
-            id:this.props.content.id||(Date.now().toString()+((Math.random()*1000).toFixed(0)).toString())
+            id:this.props.content.id|| genID()
         }
     }
 
@@ -75,14 +77,11 @@ export class ListWrap extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider muiTheme={getMuiTheme()}>
                 <List>
                     <Subheader>数据列表</Subheader>
                     {this.renderList()}
 
                 </List>
-            </MuiThemeProvider>
-
         );
     }
 }

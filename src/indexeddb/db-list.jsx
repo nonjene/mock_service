@@ -1,9 +1,13 @@
 import React from 'react';
 
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 
 import DBHandler from "./db-handler";
 import ListWrap from "./list.jsx";
+import Add from "./add.jsx";
+
 
 import css from "./db-list.scss";
 
@@ -20,9 +24,24 @@ const SampleData = {
 export class DBList extends React.Component {
     constructor( props ) {
         super( props );
+        var _this = this;
         this.state = {
             aData: [],
-            msg: ''
+            msg: '',
+            showAddDia:false
+        };
+        this.addHandle={
+            open:function(){
+                _this.setState( {showAddDia: true} )
+            },
+            close:function(){
+                _this.setState( {showAddDia: false} )
+            },
+            save:function(obj){
+                obj.body=window.o_export();
+                _this.commitContent(null, obj)
+            }
+
         }
     }
 
@@ -35,10 +54,9 @@ export class DBList extends React.Component {
         } );
         this.getList( aData=>this.setState( {aData: aData} ) );
 
-
         document.getElementById( 'add' ).onclick = function ( e ) {
-            alert('add')
-        };
+            this.setState({showAddDia:true})
+        }.bind(this);
     }
 
     setMsg( msg ) {
@@ -62,7 +80,9 @@ export class DBList extends React.Component {
         }
         db.promiseOpenStore
             .then( thisDB=>thisDB.writeOne( o.name, o ) )
-            .then( ()=>this.setMsg( '保存成功~' ) );
+            .then(()=>this.getList( aData=>this.setState( {aData: aData} ) ))
+            .then( ()=>this.setMsg( '保存成功~' ) )
+
     }
 
     delContent( name ) {
@@ -100,10 +120,10 @@ export class DBList extends React.Component {
         this.setState( {add: ++add} );
     }
 
-
     render() {
         var dressedChildren = React.Children.map( this.props.children, _addProps.bind( this ) );
         return (
+        <MuiThemeProvider muiTheme={getMuiTheme()}>
             <div className={css.dbWrap}>
                 {dressedChildren}
                 <div className={css.dbMsg}>{this.state.msg}</div>
@@ -114,7 +134,13 @@ export class DBList extends React.Component {
                         useContent={this.useContent.bind(this)}
                     />
                 </div>
+                <Add open={this.state.showAddDia}
+                    handleOpen={this.addHandle.open}
+                    handleClose={this.addHandle.close}
+                    handleSave={this.addHandle.save}
+                />
             </div>
+        </MuiThemeProvider>
         );
     }
 }
