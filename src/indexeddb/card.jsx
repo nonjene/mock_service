@@ -50,7 +50,12 @@ export class CardPiece extends React.Component {
         }
     }
     getContentFromEditor(){
-        return this.editor.get();
+        var o = this.editor.get();
+        if(o.choose){
+            return o[o.choose]
+        }else{
+            return o;
+        }
     }
 
     willGetContent() {

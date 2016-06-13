@@ -24,6 +24,7 @@ function o(el) {
     ws.send(JSON.stringify(data));
 }
 function o_import(json){
+    json.name && delete json.name;
     editor.set( json );
 }
 ws.onmessage = function(data) {
