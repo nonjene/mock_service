@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="jsoneditor.css" rel="stylesheet" type="text/css">
+    <script src="jsoneditor.js"></script>
+    <style>
+        #flex-container {
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+        }
+        #flex-container > .flex-item {
+            -webkit-flex: auto;
+            flex: auto;
+        }
+        #flex-container > .raw-item {
+            width:33%;
+        }
+        #log{
+            word-break: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="flex-container">
+        <div class="raw-item">
+
+            <form onsubmit="o(this);return false;">
+                <label>id:
+                    <br>
+                    <br>
+                    <input type="TEXT" name="input-id" />
+                </label>
+                <br>
+                <br>body:
+                <br>
+                <br>
+                <div id="jsoneditor" style="width: 400px; height: 400px;"></div>
+                <br>
+                <button type="submit">发送</button>
+            </form>
+        </div>
+        <div class="raw-item">Flex box (click to toggle raw box)</div>
+        <div class="raw-item"><div id="log"></div></div>
+    </div>
+    <script src="ws.js">
+    </script>
+</body>
+
+</html>
