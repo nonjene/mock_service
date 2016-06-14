@@ -1,23 +1,17 @@
-import React from 'react';
-
+import React from "react";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-
-
 import DBHandler from "./db-handler";
 import ListWrap from "./list.jsx";
 import Add from "./add.jsx";
-
-
 import css from "./db-list.scss";
 
 
-
 const SampleData = {
-    "id":"111",
+    "id": "111",
     "desc": "描述",
     "slug": "string",
-    "body": {rcode:0,msg:"success",data:[]}
+    "body": {rcode: 0, msg: "success", data: []}
 };
 
 
@@ -28,21 +22,25 @@ export class DBList extends React.Component {
         this.state = {
             aData: [],
             msg: '',
-            showAddDia:false
+            showAddDia: false,
+            showModifyDia: false,
+            addData: {},
+            modifyData: {}
         };
-        this.addHandle={
-            open:function(){
+        this.addHandle = {
+            open: function () {
                 _this.setState( {showAddDia: true} )
             },
-            close:function(){
+            close: function () {
                 _this.setState( {showAddDia: false} )
             },
-            save:function(obj){
-                obj.body=window.o_export();
-                _this.commitContent(null, obj)
+            save: function ( obj ) {
+                obj.body = _this.state.addData;
+                _this.commitContent( null, obj )
             }
 
-        }
+        };
+        
     }
 
     componentDidMount() {
@@ -55,8 +53,11 @@ export class DBList extends React.Component {
         this.getList( aData=>this.setState( {aData: aData} ) );
 
         document.getElementById( 'add' ).onclick = function ( e ) {
-            this.setState({showAddDia:true})
-        }.bind(this);
+            this.setState( {
+                showAddDia: true,
+                addData: window.o_export()
+            } )
+        }.bind( this );
     }
 
     setMsg( msg ) {
@@ -79,8 +80,8 @@ export class DBList extends React.Component {
             return alert( o )
         }
         db.promiseOpenStore
-            .then( thisDB=>thisDB.writeOne( o.name, o ) )
-            .then(()=>this.getList( aData=>this.setState( {aData: aData} ) ))
+            .then( thisDB=>thisDB.writeOne( o.id, o ) )
+            .then( ()=>this.getList( aData=>this.setState( {aData: aData} ) ) )
             .then( ()=>this.setMsg( '保存成功~' ) )
 
     }
@@ -100,7 +101,10 @@ export class DBList extends React.Component {
     }
 
     useContent( name, content ) {
-        this.props.instantUse( content.body)
+        this.props.instantUse( content.body )
+    }
+    modContent( content ) {
+        this.commitContent( null, content )
     }
 
     delEmpty() {
@@ -123,24 +127,26 @@ export class DBList extends React.Component {
     render() {
         var dressedChildren = React.Children.map( this.props.children, _addProps.bind( this ) );
         return (
-        <MuiThemeProvider muiTheme={getMuiTheme()}>
-            <div className={css.dbWrap}>
-                {dressedChildren}
-                <div className={css.dbMsg}>{this.state.msg}</div>
-                <div className={css.cardWrap}>
-                    <ListWrap
-                        aData={this.state.aData}
-                        delContent={this.delContent.bind(this)}
-                        useContent={this.useContent.bind(this)}
+            <MuiThemeProvider muiTheme={getMuiTheme()}>
+                <div className={css.dbWrap}>
+                    {dressedChildren}
+                    <div className={css.cardWrap}>
+                        <ListWrap
+                            aData={this.state.aData}
+                            delContent={this.delContent.bind(this)}
+                            useContent={this.useContent.bind(this)}
+                            modContent={this.modContent.bind(this)}
+                        />
+                    </div>
+                    <div className={css.dbMsg}>{this.state.msg}</div>
+
+                    <Add open={this.state.showAddDia}
+                        handleClose={this.addHandle.close}
+                        handleSave={this.addHandle.save}
                     />
+                    
                 </div>
-                <Add open={this.state.showAddDia}
-                    handleOpen={this.addHandle.open}
-                    handleClose={this.addHandle.close}
-                    handleSave={this.addHandle.save}
-                />
-            </div>
-        </MuiThemeProvider>
+            </MuiThemeProvider>
         );
     }
 }

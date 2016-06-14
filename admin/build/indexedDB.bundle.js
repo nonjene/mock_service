@@ -13545,7 +13545,10 @@ webpackJsonp([0],[
 	        _this2.state = {
 	            aData: [],
 	            msg: '',
-	            showAddDia: false
+	            showAddDia: false,
+	            showModifyDia: false,
+	            addData: {},
+	            modifyData: {}
 	        };
 	        _this2.addHandle = {
 	            open: function open() {
@@ -13555,11 +13558,12 @@ webpackJsonp([0],[
 	                _this.setState({ showAddDia: false });
 	            },
 	            save: function save(obj) {
-	                obj.body = window.o_export();
+	                obj.body = _this.state.addData;
 	                _this.commitContent(null, obj);
 	            }
 
 	        };
+
 	        return _this2;
 	    }
 
@@ -13579,7 +13583,10 @@ webpackJsonp([0],[
 	            });
 
 	            document.getElementById('add').onclick = function (e) {
-	                this.setState({ showAddDia: true });
+	                this.setState({
+	                    showAddDia: true,
+	                    addData: window.o_export()
+	                });
 	            }.bind(this);
 	        }
 	    }, {
@@ -13609,7 +13616,7 @@ webpackJsonp([0],[
 	                return alert(o);
 	            }
 	            db.promiseOpenStore.then(function (thisDB) {
-	                return thisDB.writeOne(o.name, o);
+	                return thisDB.writeOne(o.id, o);
 	            }).then(function () {
 	                return _this5.getList(function (aData) {
 	                    return _this5.setState({ aData: aData });
@@ -13643,6 +13650,11 @@ webpackJsonp([0],[
 	        key: "useContent",
 	        value: function useContent(name, content) {
 	            this.props.instantUse(content.body);
+	        }
+	    }, {
+	        key: "modContent",
+	        value: function modContent(content) {
+	            this.commitContent(null, content);
 	        }
 	    }, {
 	        key: "delEmpty",
@@ -13681,20 +13693,20 @@ webpackJsonp([0],[
 	                    dressedChildren,
 	                    _react2.default.createElement(
 	                        "div",
-	                        { className: _dbList2.default.dbMsg },
-	                        this.state.msg
-	                    ),
-	                    _react2.default.createElement(
-	                        "div",
 	                        { className: _dbList2.default.cardWrap },
 	                        _react2.default.createElement(_list2.default, {
 	                            aData: this.state.aData,
 	                            delContent: this.delContent.bind(this),
-	                            useContent: this.useContent.bind(this)
+	                            useContent: this.useContent.bind(this),
+	                            modContent: this.modContent.bind(this)
 	                        })
 	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: _dbList2.default.dbMsg },
+	                        this.state.msg
+	                    ),
 	                    _react2.default.createElement(_add2.default, { open: this.state.showAddDia,
-	                        handleOpen: this.addHandle.open,
 	                        handleClose: this.addHandle.close,
 	                        handleSave: this.addHandle.save
 	                    })
@@ -19305,6 +19317,10 @@ webpackJsonp([0],[
 
 	var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
+	var _modify = __webpack_require__(442);
+
+	var _modify2 = _interopRequireDefault(_modify);
+
 	var _genId = __webpack_require__(441);
 
 	var _genId2 = _interopRequireDefault(_genId);
@@ -19332,18 +19348,37 @@ webpackJsonp([0],[
 	    function Item(props) {
 	        _classCallCheck(this, Item);
 
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Item).call(this, props));
+	        var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Item).call(this, props));
 
-	        _this.state = {
-	            id: _this.props.content.id || (0, _genId2.default)()
+	        _this2.state = {
+	            id: _this2.props.content.id || (0, _genId2.default)(),
+	            showModifyDia: false
 	        };
-	        return _this;
+	        var _this = _this2;
+	        _this2.modifyHandle = {
+	            open: function open() {
+	                _this.setState({ showModifyDia: true });
+	            },
+	            close: function close() {
+	                _this.setState({ showModifyDia: false });
+	            },
+	            save: function save(newData) {
+	                _this.props.modContent(newData);
+	            }
+
+	        };
+	        return _this2;
 	    }
 
 	    _createClass(Item, [{
 	        key: 'delContent',
 	        value: function delContent() {
 	            this.props.delContent(this.state.id);
+	        }
+	    }, {
+	        key: 'modContent',
+	        value: function modContent() {
+	            return this.modifyHandle.open();
 	        }
 	    }, {
 	        key: 'useContent',
@@ -19367,7 +19402,7 @@ webpackJsonp([0],[
 	                        ),
 	                        _react2.default.createElement(
 	                            _MenuItem2.default,
-	                            null,
+	                            { onTouchTap: this.modContent.bind(this) },
 	                            '修改'
 	                        ),
 	                        _react2.default.createElement(
@@ -19378,7 +19413,12 @@ webpackJsonp([0],[
 	                    ),
 	                    primaryText: this.props.content.desc
 	                }),
-	                _react2.default.createElement(_Divider2.default, null)
+	                _react2.default.createElement(_Divider2.default, null),
+	                _react2.default.createElement(_modify2.default, { open: this.state.showModifyDia,
+	                    data: this.props.content,
+	                    handleClose: this.modifyHandle.close,
+	                    handleSave: this.modifyHandle.save
+	                })
 	            );
 	        }
 	    }]);
@@ -19398,14 +19438,15 @@ webpackJsonp([0],[
 	    _createClass(ListWrap, [{
 	        key: 'renderList',
 	        value: function renderList() {
-	            var _this3 = this;
+	            var _this4 = this;
 
 	            var render = this.props.aData.map(function (oriItem) {
 	                return _react2.default.createElement(Item, {
 	                    content: oriItem,
 	                    key: oriItem.id,
-	                    delContent: _this3.props.delContent,
-	                    useContent: _this3.props.useContent
+	                    delContent: _this4.props.delContent,
+	                    useContent: _this4.props.useContent,
+	                    modContent: _this4.props.modContent
 	                });
 	            });
 
@@ -20838,6 +20879,183 @@ webpackJsonp([0],[
 	; /**
 	   * Created by Nonjene on 16/6/13.
 	   */
+
+/***/ },
+/* 442 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Dialog = __webpack_require__(434);
+
+	var _Dialog2 = _interopRequireDefault(_Dialog);
+
+	var _FlatButton = __webpack_require__(438);
+
+	var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+	var _TextField = __webpack_require__(301);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var newEditor = function newEditor() {
+	    this.editor = new JSONEditor(this.refs.editor, {
+	        mode: "tree",
+	        search: false,
+	        sortObjectKeys: false,
+	        modes: ["tree", "code"]
+	    });
+	    this.editor.set(this.state.body);
+	};
+
+	var Modify = function (_React$Component) {
+	    _inherits(Modify, _React$Component);
+
+	    function Modify(props) {
+	        _classCallCheck(this, Modify);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Modify).call(this, props));
+
+	        var _this$props$data = _this.props.data;
+	        var desc = _this$props$data.desc;
+	        var slug = _this$props$data.slug;
+	        var body = _this$props$data.body;
+
+	        var rest = _objectWithoutProperties(_this$props$data, ["desc", "slug", "body"]);
+
+	        _this.state = {
+	            errNeedDesc: '',
+	            desc: desc,
+	            slug: slug,
+	            body: body,
+	            rest: rest
+	        };
+	        return _this;
+	    }
+
+	    _createClass(Modify, [{
+	        key: "componentDidMount",
+	        value: function componentDidMount() {}
+	    }, {
+	        key: "componentDidUpdate",
+	        value: function componentDidUpdate(preProps) {
+	            var _this2 = this;
+
+	            if (preProps.open === false && this.props.open === true) {
+	                setTimeout(function () {
+	                    newEditor.call(_this2);
+	                    _this2.forceUpdate();
+	                }, 0);
+	            }
+	        }
+	    }, {
+	        key: "save",
+	        value: function save() {
+	            if (!this.state.desc) return this.setState({ errNeedDesc: '添加一个描述哇' });
+	            // console.log( this.props.data)
+	            // console.log( this.state.rest)
+	            var newBody = this.editor.get();
+	            this.props.handleSave(_extends({
+	                desc: this.state.desc,
+	                slug: this.state.slug,
+	                body: newBody
+	            }, this.state.rest));
+	            this.setState({ body: newBody });
+	            this.props.handleClose();
+	        }
+	    }, {
+	        key: "descChange",
+	        value: function descChange(e) {
+	            this.setState({ desc: e.target.value, errNeedDesc: null });
+	        }
+	    }, {
+	        key: "slugChange",
+	        value: function slugChange(e) {
+	            this.setState({ slug: e.target.value });
+	        }
+	    }, {
+	        key: "close",
+	        value: function close() {
+	            this.editor = null;
+	            this.props.handleClose();
+	        }
+	        /**
+	         * {}
+	         * @returns {XML}
+	         */
+
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            var actions = [_react2.default.createElement(_FlatButton2.default, {
+	                label: "取消",
+	                primary: true,
+	                onTouchTap: this.close.bind(this)
+	            }), _react2.default.createElement(_FlatButton2.default, {
+	                label: "保存",
+	                primary: true,
+	                onTouchTap: this.save.bind(this)
+	            })];
+
+	            return _react2.default.createElement(
+	                "div",
+	                null,
+	                _react2.default.createElement(
+	                    _Dialog2.default,
+	                    {
+	                        title: "修改",
+	                        actions: actions,
+	                        modal: false,
+	                        open: this.props.open,
+	                        onRequestClose: this.close.bind(this)
+	                    },
+	                    _react2.default.createElement("div", { ref: "editor" }),
+	                    _react2.default.createElement(_TextField2.default, {
+	                        hintText: "这是什么样的数据?",
+	                        floatingLabelText: "数据描述",
+	                        fullWidth: true,
+	                        value: this.state.desc,
+	                        onChange: this.descChange.bind(this),
+	                        errorText: this.state.errNeedDesc
+	                    }),
+	                    _react2.default.createElement(_TextField2.default, {
+	                        hintText: "slug",
+	                        floatingLabelText: "数据slug",
+	                        fullWidth: true,
+	                        value: this.state.slug,
+	                        onChange: this.slugChange.bind(this)
+	                    })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Modify;
+	}(_react2.default.Component);
+
+	exports.default = Modify;
 
 /***/ }
 ]);
