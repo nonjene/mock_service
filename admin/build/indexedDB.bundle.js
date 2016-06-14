@@ -13741,7 +13741,7 @@ webpackJsonp([0],[
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"add":"src-indexeddb-___db-list__add___2XYIN"};
+	module.exports = {"diaModEdit":"src-indexeddb-___db-list__diaModEdit___rQzh7"};
 
 /***/ },
 /* 392 */,
@@ -20910,6 +20910,10 @@ webpackJsonp([0],[
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
+	var _dbList = __webpack_require__(391);
+
+	var _dbList2 = _interopRequireDefault(_dbList);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -21031,7 +21035,7 @@ webpackJsonp([0],[
 	                        open: this.props.open,
 	                        onRequestClose: this.close.bind(this)
 	                    },
-	                    _react2.default.createElement("div", { ref: "editor" }),
+	                    _react2.default.createElement("div", { className: _dbList2.default.diaModEdit, ref: "editor" }),
 	                    _react2.default.createElement(_TextField2.default, {
 	                        hintText: "这是什么样的数据?",
 	                        floatingLabelText: "数据描述",

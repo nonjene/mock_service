@@ -1,7 +1,8 @@
-.add{
-    position: fixed;
-    top:0;
-    left:0;
-    bottom:0;
-    right:0
+.diaModEdit{
+    :global {
+        .jsoneditor, div.jsoneditor-tree {
+            font-family: "PingFang SC";
+            min-height: 180px;
+        }
+    }
 }
