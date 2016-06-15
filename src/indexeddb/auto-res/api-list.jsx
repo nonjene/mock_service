@@ -13,6 +13,7 @@ import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import IconMenu from "material-ui/IconMenu";
 import DBHandler from "../db-handler";
 import genID from "../gen-id";
+import WSRes from "./ws-res";
 import DBSelect from "./db-select.jsx";
 import css from "./api-list.scss";
 
@@ -75,18 +76,24 @@ export class ApiList extends React.Component {
                     list: list
                 } )
             } );
-        new DBHandler( {
+        var dbData = new DBHandler( {
             storeName: this.props.dataStore,
             keyPath: this.props.datakeyPath,
             openStore: 'instant',
             initStoreData: {id: 1}
-        } ).promiseOpenStore
+        } );
+        dbData.promiseOpenStore
             .then( db=>db.readAll() )
             .then( list=> {
                 this.setState( {
                     dataDb: list
                 } )
             } );
+        new WSRes({
+            dbApi: this.db,
+            dbData:dbData,
+            webSocket:this.props.socket
+        })
     }
 
     updData( id, prop ) {

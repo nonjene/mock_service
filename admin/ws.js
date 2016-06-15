@@ -24,13 +24,12 @@ function o(el) {
     ws.send(JSON.stringify(data));
 }
 function o_import(json){
-    json.name && delete json.name;
     editor.set( json );
 }
 function o_export(){
     return editor.get();
 }
 ws.onmessage = function(data) {
-    console.log(data.data);
+    console.log(JSON.parse(data.data));
     document.querySelector("#log").innerHTML += "<br>" + htmlToText(data.data);
 };

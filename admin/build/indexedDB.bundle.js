@@ -55,7 +55,8 @@ webpackJsonp([0],[
 	        storeName: 'LizhiMockAPI100',
 	        keyPath: 'id',
 	        dataStore: 'LizhiMockAPI13',
-	        datakeyPath: 'id'
+	        datakeyPath: 'id',
+	        socket: new WebSocket('ws://' + window.location.hostname + ":3336")
 	    })
 	), document.getElementById('auto_res_list'));
 
@@ -21636,6 +21637,10 @@ webpackJsonp([0],[
 
 	var _genId2 = _interopRequireDefault(_genId);
 
+	var _wsRes = __webpack_require__(459);
+
+	var _wsRes2 = _interopRequireDefault(_wsRes);
+
 	var _dbSelect = __webpack_require__(458);
 
 	var _dbSelect2 = _interopRequireDefault(_dbSelect);
@@ -21724,17 +21729,23 @@ webpackJsonp([0],[
 	                    list: list
 	                });
 	            });
-	            new _dbHandler2.default({
+	            var dbData = new _dbHandler2.default({
 	                storeName: this.props.dataStore,
 	                keyPath: this.props.datakeyPath,
 	                openStore: 'instant',
 	                initStoreData: { id: 1 }
-	            }).promiseOpenStore.then(function (db) {
+	            });
+	            dbData.promiseOpenStore.then(function (db) {
 	                return db.readAll();
 	            }).then(function (list) {
 	                _this3.setState({
 	                    dataDb: list
 	                });
+	            });
+	            new _wsRes2.default({
+	                dbApi: this.db,
+	                dbData: dbData,
+	                webSocket: this.props.socket
 	            });
 	        }
 	    }, {
@@ -23218,10 +23229,6 @@ webpackJsonp([0],[
 
 	var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
-	var _dbHandler = __webpack_require__(310);
-
-	var _dbHandler2 = _interopRequireDefault(_dbHandler);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23263,6 +23270,90 @@ webpackJsonp([0],[
 	}(_react2.default.Component);
 
 	exports.default = DBSelect;
+
+/***/ },
+/* 459 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var WSRes = function () {
+	    function WSRes(_ref) {
+	        var dbApi = _ref.dbApi;
+	        var dbData = _ref.dbData;
+	        var webSocket = _ref.webSocket;
+
+	        var opt = _objectWithoutProperties(_ref, ['dbApi', 'dbData', 'webSocket']);
+
+	        _classCallCheck(this, WSRes);
+
+	        this.opt = opt;
+	        this.dbApi = dbApi;
+	        this.dbData = dbData;
+	        this.webSocket = webSocket;
+	        webSocket.onmessage = this.getMsg.bind(this);
+	    }
+
+	    _createClass(WSRes, [{
+	        key: 'getMsg',
+	        value: function getMsg(data) {
+	            var _this = this;
+
+	            data = JSON.parse(data.data);
+	            var url = data.request.url;
+	            this.socketID = data.id;
+
+	            this.dbApi.promiseOpenStore.then(function (db) {
+	                return db.readAll();
+	            }).then(function (data) {
+	                return _this.getData(data.filter(function (item) {
+	                    return item.addr === url || item.addr + '/' === url;
+	                })[0]);
+	            });
+	        }
+	    }, {
+	        key: 'getData',
+	        value: function getData(route) {
+	            var _this2 = this;
+
+	            if (!route) {
+	                return this.onNoApiFound();
+	            }
+	            var id = route.target_id;
+	            this.dbData.promiseOpenStore.then(function (db) {
+	                return db.readOne(id);
+	            }).then(function (data) {
+	                return _this2.sendMsg(data);
+	            });
+	        }
+	    }, {
+	        key: 'sendMsg',
+	        value: function sendMsg(data) {
+	            this.webSocket.send(JSON.stringify({
+	                body: data,
+	                id: this.socketID
+	            }));
+	        }
+	    }, {
+	        key: 'onNoApiFound',
+	        value: function onNoApiFound() {}
+	    }]);
+
+	    return WSRes;
+	}();
+
+	exports.default = WSRes;
+	;
 
 /***/ }
 ]);

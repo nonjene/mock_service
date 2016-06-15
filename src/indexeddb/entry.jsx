@@ -34,6 +34,7 @@ ReactDOM.render( (
             keyPath="id"
             dataStore="LizhiMockAPI13"
             datakeyPath="id"
+            socket={new WebSocket('ws://' + window.location.hostname + ":3336")}
         />
     </div>
 ), document.getElementById( 'auto_res_list' ) );
