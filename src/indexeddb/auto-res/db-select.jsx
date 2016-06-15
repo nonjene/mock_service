@@ -3,9 +3,6 @@ import React from 'react';
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 
-import DBHandler from "../db-handler";
-
-
 export default class DBSelect extends React.Component {
     constructor( props ) {
         super( props );
