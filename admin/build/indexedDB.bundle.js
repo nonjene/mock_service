@@ -51,7 +51,12 @@ webpackJsonp([0],[
 	_reactDom2.default.render(_react2.default.createElement(
 	    'div',
 	    { className: _css2.default.wrap },
-	    _react2.default.createElement(_apiList.ApiList, { storeName: 'LizhiMockAPI100', keyPath: 'id' })
+	    _react2.default.createElement(_apiList.ApiList, {
+	        storeName: 'LizhiMockAPI100',
+	        keyPath: 'id',
+	        dataStore: 'LizhiMockAPI13',
+	        datakeyPath: 'id'
+	    })
 	), document.getElementById('auto_res_list'));
 
 /***/ },
@@ -21593,10 +21598,6 @@ webpackJsonp([0],[
 
 	var _Subheader2 = _interopRequireDefault(_Subheader);
 
-	var _SelectField = __webpack_require__(444);
-
-	var _SelectField2 = _interopRequireDefault(_SelectField);
-
 	var _MenuItem = __webpack_require__(431);
 
 	var _MenuItem2 = _interopRequireDefault(_MenuItem);
@@ -21634,6 +21635,10 @@ webpackJsonp([0],[
 	var _genId = __webpack_require__(441);
 
 	var _genId2 = _interopRequireDefault(_genId);
+
+	var _dbSelect = __webpack_require__(458);
+
+	var _dbSelect2 = _interopRequireDefault(_dbSelect);
 
 	var _apiList = __webpack_require__(452);
 
@@ -21677,8 +21682,9 @@ webpackJsonp([0],[
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ApiList).call(this, props));
 
 	        _this.state = {
-	            list: [],
-	            msg: ''
+	            list: [], //api列表
+	            msg: '',
+	            dataDb: [] //数据列表
 	        };
 	        return _this;
 	    }
@@ -21716,6 +21722,18 @@ webpackJsonp([0],[
 	            }).then(function (list) {
 	                _this3.setState({
 	                    list: list
+	                });
+	            });
+	            new _dbHandler2.default({
+	                storeName: this.props.dataStore,
+	                keyPath: this.props.datakeyPath,
+	                openStore: 'instant',
+	                initStoreData: { id: 1 }
+	            }).promiseOpenStore.then(function (db) {
+	                return db.readAll();
+	            }).then(function (list) {
+	                _this3.setState({
+	                    dataDb: list
 	                });
 	            });
 	        }
@@ -21772,12 +21790,6 @@ webpackJsonp([0],[
 	        value: function renderList() {
 	            var _this4 = this;
 
-	            /*var list = this.state.list.slice();
-	             if (this.state.add) {
-	             for (let i = 0; i < this.state.add; i++) {
-	             list.unshift( genEmptyData() )
-	             }
-	             }*/
 	            return this.state.list.map(function (item) {
 	                return _react2.default.createElement(
 	                    _Paper2.default,
@@ -21792,17 +21804,13 @@ webpackJsonp([0],[
 	                        value: item.addr,
 	                        onChange: _this4.nameChange.bind(_this4, item.id),
 	                        errorText: _this4.state.errNeedName,
-	                        debounceTimeout: 300
+	                        debounceTimeout: 450
 	                    }),
-	                    _react2.default.createElement(
-	                        _SelectField2.default,
-	                        { value: item.target_id, onChange: _this4.targetChange.bind(_this4, item.id) },
-	                        _react2.default.createElement(_MenuItem2.default, { value: 1, primaryText: "Never" }),
-	                        _react2.default.createElement(_MenuItem2.default, { value: 2, primaryText: "Every Night" }),
-	                        _react2.default.createElement(_MenuItem2.default, { value: 3, primaryText: "Weeknights" }),
-	                        _react2.default.createElement(_MenuItem2.default, { value: '123456789', primaryText: "Weekends" }),
-	                        _react2.default.createElement(_MenuItem2.default, { value: 5, primaryText: "Weekly" })
-	                    ),
+	                    _react2.default.createElement(_dbSelect2.default, {
+	                        targetChange: _this4.targetChange.bind(_this4, item.id),
+	                        target_id: item.target_id,
+	                        dataList: _this4.state.dataDb
+	                    }),
 	                    _react2.default.createElement(
 	                        "div",
 	                        { className: _apiList2.default.paperHandler },
@@ -21831,7 +21839,7 @@ webpackJsonp([0],[
 	                    _react2.default.createElement(
 	                        _Subheader2.default,
 	                        null,
-	                        "api列表"
+	                        "自动匹配api地址返回数据:"
 	                    ),
 	                    _react2.default.createElement(_RaisedButton2.default, { className: _apiList2.default.addBtn, label: "新建API", onTouchTap: this.createData.bind(this), primary: true }),
 	                    _react2.default.createElement(
@@ -23185,6 +23193,76 @@ webpackJsonp([0],[
 	}
 
 	module.exports = shallowCompare;
+
+/***/ },
+/* 458 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _SelectField = __webpack_require__(444);
+
+	var _SelectField2 = _interopRequireDefault(_SelectField);
+
+	var _MenuItem = __webpack_require__(431);
+
+	var _MenuItem2 = _interopRequireDefault(_MenuItem);
+
+	var _dbHandler = __webpack_require__(310);
+
+	var _dbHandler2 = _interopRequireDefault(_dbHandler);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var DBSelect = function (_React$Component) {
+	    _inherits(DBSelect, _React$Component);
+
+	    function DBSelect(props) {
+	        _classCallCheck(this, DBSelect);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(DBSelect).call(this, props));
+	    }
+	    //dataList
+
+
+	    _createClass(DBSelect, [{
+	        key: "list",
+	        value: function list() {
+	            return this.props.dataList.map(function (item) {
+	                return _react2.default.createElement(_MenuItem2.default, { key: item.id, value: item.id, primaryText: item.desc });
+	            });
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            return _react2.default.createElement(
+	                _SelectField2.default,
+	                { value: this.props.target_id, onChange: this.props.targetChange },
+	                this.list()
+	            );
+	        }
+	    }]);
+
+	    return DBSelect;
+	}(_react2.default.Component);
+
+	exports.default = DBSelect;
 
 /***/ }
 ]);

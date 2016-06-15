@@ -29,6 +29,11 @@ ReactDOM.render( (
 ), document.getElementById( 'list' ) );
 ReactDOM.render( (
     <div className={css.wrap}>
-        <ApiList storeName="LizhiMockAPI100" keyPath="id"/>
+        <ApiList
+            storeName="LizhiMockAPI100"
+            keyPath="id"
+            dataStore="LizhiMockAPI13"
+            datakeyPath="id"
+        />
     </div>
 ), document.getElementById( 'auto_res_list' ) );
