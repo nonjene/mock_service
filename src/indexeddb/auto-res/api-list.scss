@@ -1,0 +1,23 @@
+.cardWrap{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+.card{
+    width: 300px;
+    margin: 12px;
+    padding: 10px;
+    position: relative;
+    header{
+        padding-bottom:10px;
+    }
+
+}
+.addBtn{
+    margin-left: 16px;
+}
+
+.paperHandler{
+    position: absolute;
+    top:0;right:0
+}

@@ -7,6 +7,7 @@ import '../lib/css/normalize.scss';
 import css from "./css.scss";
 
 import {DBList} from './db-list.jsx';
+import {ApiList} from './auto-res/api-list.jsx';
 //import {HandleBar} from './handle-bar.jsx';
 
 /*
@@ -26,3 +27,8 @@ ReactDOM.render( (
 
     </div>
 ), document.getElementById( 'list' ) );
+ReactDOM.render( (
+    <div className={css.wrap}>
+        <ApiList storeName="LizhiMockAPI100" keyPath="id"/>
+    </div>
+), document.getElementById( 'auto_res_list' ) );
