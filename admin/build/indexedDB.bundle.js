@@ -19276,7 +19276,7 @@ webpackJsonp([0],[
 /* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -19337,7 +19337,7 @@ webpackJsonp([0],[
 	    _IconButton2.default,
 	    {
 	        touch: true,
-	        tooltipPosition: 'bottom-left'
+	        tooltipPosition: "bottom-left"
 	    },
 	    _react2.default.createElement(_moreVert2.default, { color: _colors.grey400 })
 	);
@@ -19371,25 +19371,25 @@ webpackJsonp([0],[
 	    }
 
 	    _createClass(Item, [{
-	        key: 'delContent',
+	        key: "delContent",
 	        value: function delContent() {
 	            this.props.delContent(this.state.id);
 	        }
 	    }, {
-	        key: 'modContent',
+	        key: "modContent",
 	        value: function modContent() {
 	            return this.modifyHandle.open();
 	        }
 	    }, {
-	        key: 'useContent',
+	        key: "useContent",
 	        value: function useContent() {
 	            this.props.useContent(this.state.id, this.props.content);
 	        }
 	    }, {
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
+	                "div",
 	                { onTouchTap: this.useContent.bind(this) },
 	                _react2.default.createElement(_List.ListItem, {
 	                    rightIconButton: _react2.default.createElement(
@@ -19398,20 +19398,21 @@ webpackJsonp([0],[
 	                        _react2.default.createElement(
 	                            _MenuItem2.default,
 	                            { onTouchTap: this.useContent.bind(this) },
-	                            '使用'
+	                            "使用"
 	                        ),
 	                        _react2.default.createElement(
 	                            _MenuItem2.default,
 	                            { onTouchTap: this.modContent.bind(this) },
-	                            '修改'
+	                            "修改"
 	                        ),
 	                        _react2.default.createElement(
 	                            _MenuItem2.default,
 	                            { onTouchTap: this.delContent.bind(this) },
-	                            '删除'
+	                            "删除"
 	                        )
 	                    ),
-	                    primaryText: this.props.content.desc
+	                    primaryText: this.props.content.desc,
+	                    secondaryText: this.props.content.slug
 	                }),
 	                _react2.default.createElement(_Divider2.default, null),
 	                _react2.default.createElement(_modify2.default, { open: this.state.showModifyDia,
@@ -19436,7 +19437,7 @@ webpackJsonp([0],[
 	    }
 
 	    _createClass(ListWrap, [{
-	        key: 'renderList',
+	        key: "renderList",
 	        value: function renderList() {
 	            var _this4 = this;
 
@@ -19453,7 +19454,7 @@ webpackJsonp([0],[
 	            return render;
 	        }
 	    }, {
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
 	                _List.List,
@@ -19461,7 +19462,7 @@ webpackJsonp([0],[
 	                _react2.default.createElement(
 	                    _Subheader2.default,
 	                    null,
-	                    '数据列表'
+	                    "数据列表"
 	                ),
 	                this.renderList()
 	            );

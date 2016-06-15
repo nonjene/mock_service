@@ -1,18 +1,14 @@
-import React from 'react';
-
-import {List, ListItem} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import Subheader from 'material-ui/Subheader';
-import {grey400} from 'material-ui/styles/colors';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-
+import React from "react";
+import {List, ListItem} from "material-ui/List";
+import Divider from "material-ui/Divider";
+import Subheader from "material-ui/Subheader";
+import {grey400} from "material-ui/styles/colors";
+import IconButton from "material-ui/IconButton";
+import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
+import IconMenu from "material-ui/IconMenu";
+import MenuItem from "material-ui/MenuItem";
 import Modify from "./modify.jsx";
-
-
-import genID from './gen-id';
+import genID from "./gen-id";
 
 
 const iconButtonElement = (
@@ -70,6 +66,7 @@ export class Item extends React.Component {
                     </IconMenu>
                     }
                     primaryText={this.props.content.desc}
+                    secondaryText={this.props.content.slug}
                 />
                 < Divider />
                 <Modify open={this.state.showModifyDia}
