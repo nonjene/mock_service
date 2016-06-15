@@ -11,6 +11,7 @@ import {grey400} from "material-ui/styles/colors";
 import IconButton from "material-ui/IconButton";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import IconMenu from "material-ui/IconMenu";
+import Checkbox from "material-ui/Checkbox";
 import DBHandler from "../db-handler";
 import genID from "../gen-id";
 import WSRes from "./ws-res";
@@ -44,7 +45,8 @@ export class ApiList extends React.Component {
         this.state = {
             list: [],//api列表
             msg: '',
-            dataDb:[]//数据列表
+            dataDb:[],//数据列表
+            wsAutoRes:true //this is static, never changes.
         }
     }
 
@@ -89,12 +91,19 @@ export class ApiList extends React.Component {
                     dataDb: list
                 } )
             } );
-        new WSRes({
+        this.WSHandler = new WSRes({
             dbApi: this.db,
             dbData:dbData,
-            webSocket:this.props.socket
+            webSocket:this.props.socket,
+            turnOn:this.state.wsAutoRes
         })
     }
+
+    wsTurn( e, isChecked ) { (isChecked ? this.wsTrunOn : this.wsTrunOff).call(this); }
+
+    wsTrunOn() { this.WSHandler.turnOn() }
+
+    wsTrunOff() { this.WSHandler.turnOff() }
 
     updData( id, prop ) {
         var newData = {};
@@ -173,7 +182,16 @@ export class ApiList extends React.Component {
 
             <MuiThemeProvider muiTheme={getMuiTheme()}>
                 <div>
-                    <Subheader>自动匹配api地址返回数据:</Subheader>
+                    <Subheader>
+                        自动匹配api地址返回数据:
+                        <Checkbox
+                            label="自动返回"
+                            defaultChecked={this.state.wsAutoRes}
+                            onCheck={this.wsTurn.bind(this)}
+                            className={css.cb}
+                        />
+                    </Subheader>
+
                     <RaisedButton className={css.addBtn} label="新建API" onTouchTap={this.createData.bind(this)} primary={true} />
                     <div className={css.cardWrap}>
                         {this.renderList.call( this )}

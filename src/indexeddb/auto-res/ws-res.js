@@ -4,7 +4,9 @@ export default class WSRes {
         this.dbApi = dbApi;
         this.dbData = dbData;
         this.webSocket = webSocket;
-        webSocket.onmessage = this.getMsg.bind(this);
+        if(opt.turnOn){
+            this.turnOn();
+        }
     }
 
     getMsg( data ) {
@@ -29,10 +31,15 @@ export default class WSRes {
 
     sendMsg( data ) {
         this.webSocket.send( JSON.stringify( {
-            body: data,
+            body: data.body,
             id: this.socketID
         } ) );
     }
-
+    turnOn(){
+        this.webSocket.onmessage = this.getMsg.bind( this )
+    }
+    turnOff(){
+        this.webSocket.onmessage = null
+    }
     onNoApiFound(){}
 };
