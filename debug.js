@@ -9,7 +9,7 @@ function waitForResponse(ctx, broadcast, redis) {
     broadcast(JSON.stringify({
         request: ctx.request,
         id: id
-    }));
+    }), ctx.ip);
     var repeater = setInterval(function() {
         redis.get(id,function(err, value){
             if (value === "__status_ready") {
@@ -45,6 +45,9 @@ function asyc(broadcast, redis, ctx,next) {
 
 const initWSS = require('./wss').init;
 const redis = require('redis');
+
+const regIP = /^\:\:\S+\:/;
+
 function debug(wsOpt,redisOpt){
     const redisClient = redis.createClient(redisOpt);
 
@@ -66,10 +69,15 @@ function debug(wsOpt,redisOpt){
             } catch (e) { }
         });
     });
-    function broadcast(data) {
+    function broadcast(data,ip) {
+        if (typeof ip !== 'string') {return console.log( 'err:ip is not a string' )}
+
         wss.clients.forEach(function each(client) {
-            client.send(data);
+            if(client._socket.remoteAddress===ip.replace( regIP,'')){
+                client.send( data );
+            }
         });
+
     }
     return function(ctx,next) {
         return asyc(broadcast, redisClient, ctx,next);
