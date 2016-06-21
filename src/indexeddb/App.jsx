@@ -65,7 +65,7 @@ export class App extends React.Component {
                         />
                     </div>
                 </div>
-                <div className="second-floor" id="auto_res_list">
+                <div className="second-floor">
                     <ApiList
                         storeName="LizhiMockAPI100"
                         keyPath="id"

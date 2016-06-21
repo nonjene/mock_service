@@ -309,7 +309,7 @@ webpackJsonp([0],[
 	                ),
 	                _react2.default.createElement(
 	                    "div",
-	                    { className: "second-floor", id: "auto_res_list" },
+	                    { className: "second-floor" },
 	                    _react2.default.createElement(_apiList.ApiList, {
 	                        storeName: "LizhiMockAPI100",
 	                        keyPath: "id",
