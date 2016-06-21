@@ -34,31 +34,7 @@
 </head>
 
 <body>
-    <div id="flex-container">
-        <div class="raw-item">
-
-            <form onsubmit="o(this);return false;">
-                <label>id:
-                    <br>
-                    <br>
-                    <input type="TEXT" name="input-id" />
-                </label>
-                <br>
-                <br>body:
-                <br>
-                <br>
-                <div id="jsoneditor" style="width: 400px; height: 400px;"></div>
-                <br>
-                <button type="submit">发送</button>
-                <button type="button" id="add">新增到list</button>
-            </form>
-        </div>
-        <div class="raw-item">
-            <div id="list"></div>
-        </div>
-        <div class="raw-item"><div id="log"></div></div>
-    </div>
-    <div class="second-floor" id="auto_res_list"></div>
+    <div id="root"></div>
     <script src="ws.js">
     </script>
     <script type="text/javascript" src="/build/vendors.js"></script>
