@@ -50,15 +50,21 @@ export class DBList extends React.Component {
             openStore: 'instant',
             initStoreData: SampleData
         } );
-        this.getList( aData=>this.setState( {aData: aData} ) );
+        this.getList( aData=>{
+            this.setState( {aData: aData} );
+            this.props.onRender();
+        } );
 
     }
-    componentDidUpdate(preprop){
+    componentDidUpdate(preprop, preState){
         if(preprop.addData!==this.props.addData && Object.keys( this.props.addData ).length > 0){
             this.setState( {
                 showAddDia: true,
                 addData: this.props.addData
             } )
+        }
+        if(this.state.aData!== preState.aData){
+            this.props.onUpdateData( this.state.aData);
         }
 
     }

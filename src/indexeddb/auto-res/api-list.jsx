@@ -45,7 +45,6 @@ export class ApiList extends React.Component {
         this.state = {
             list: [],//api列表
             msg: '',
-            dataDb:[],//数据列表
             wsAutoRes:true //this is static, never changes.
         }
     }
@@ -78,22 +77,10 @@ export class ApiList extends React.Component {
                     list: list
                 } )
             } );
-        var dbData = new DBHandler( {
-            storeName: this.props.dataStore,
-            keyPath: this.props.datakeyPath,
-            openStore: 'instant',
-            initStoreData: {id: 1}
-        } );
-        dbData.promiseOpenStore
-            .then( db=>db.readAll() )
-            .then( list=> {
-                this.setState( {
-                    dataDb: list
-                } )
-            } );
+
         this.WSHandler = new WSRes({
             dbApi: this.db,
-            dbData:dbData,
+            dbData:this.props.dataList,
             webSocket:this.props.socket,
             turnOn:this.state.wsAutoRes
         })
@@ -165,7 +152,7 @@ export class ApiList extends React.Component {
                     <DBSelect
                         targetChange={this.targetChange.bind(this,item.id)}
                         target_id={item.target_id}
-                        dataList={this.state.dataDb}
+                        dataList={this.props.dataList}
                     />
                     <div className={css.paperHandler}>
                         <IconMenu iconButtonElement={iconButtonElement}>

@@ -34,12 +34,16 @@ export class App extends React.Component {
             ws: ws,
             addData:{},
             instantUseData:{},
-            tabIndex:0
+            tabIndex:0,
+            dataList:[] //嗯, 数据在db-list组件里面获取的。。。忍住别笑
 
         }
     }
     componentDidMount(){
         
+    }
+    doForceUpdate(){
+        this.forceUpdate()
     }
     reqID(id){
         this.setState({
@@ -60,9 +64,15 @@ export class App extends React.Component {
 
     tabChange( value ){
         this.setState( {
-            tabIndex: value,
+            tabIndex: value
         } );
     };
+
+    dataListUpdated( dataList){
+        this.setState({
+            dataList
+        })
+    }
     render() {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme()}>
@@ -88,8 +98,9 @@ export class App extends React.Component {
 
                                 </div>
                                 <div className="raw-item">
-                                    <DBList storeName="LizhiMockAPI13" keyPath="id" instantUse={this.instantUse.bind(this)} addData={this.state.addData} />
-
+                                    <DBList onRender={this.doForceUpdate.bind(this)}
+                                        onUpdateData={this.dataListUpdated.bind(this)}
+                                        storeName="LizhiMockAPI13" keyPath="id" instantUse={this.instantUse.bind(this)} addData={this.state.addData} />
                                 </div>
                                 <div className="raw-item">
                                     <Log
@@ -103,9 +114,9 @@ export class App extends React.Component {
                             <ApiList
                                 storeName="LizhiMockAPI100"
                                 keyPath="id"
-                                dataStore="LizhiMockAPI13"
-                                datakeyPath="id"
+                                dataList={this.state.dataList}
                                 socket={new WebSocket('ws://' + window.location.hostname + ":3336")}
+                                need
                             />
                         </div>
 
