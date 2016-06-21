@@ -52,14 +52,16 @@ export class DBList extends React.Component {
         } );
         this.getList( aData=>this.setState( {aData: aData} ) );
 
-        document.getElementById( 'add' ).onclick = function ( e ) {
+    }
+    componentDidUpdate(preprop){
+        if(preprop.addData!==this.props.addData && Object.keys( this.props.addData ).length > 0){
             this.setState( {
                 showAddDia: true,
-                addData: window.o_export()
+                addData: this.props.addData
             } )
-        }.bind( this );
-    }
+        }
 
+    }
     setMsg( msg ) {
         this.setState( {
             msg: msg

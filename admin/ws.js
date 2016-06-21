@@ -5,15 +5,15 @@ function htmlToText(html) {
     tmp.innerText = html;
     return tmp.innerHTML || "";
 }
-
-var container = document.getElementById("jsoneditor");
-var options = {
-    mode: "tree",
-    search: false,
-    sortObjectKeys:false,
-    modes:["tree","code"]
-};
-var editor = new JSONEditor(container, options);
+//
+// var container = document.getElementById("jsoneditor");
+// var options = {
+//     mode: "tree",
+//     search: false,
+//     sortObjectKeys:false,
+//     modes:["tree","code"]
+// };
+// var editor = new JSONEditor(container, options);
 
 
 // get json

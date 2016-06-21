@@ -1,40 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import injectTapEventPlugin from "react-tap-event-plugin";
-injectTapEventPlugin();
 
-import '../lib/css/normalize.scss';
-import css from "./css.scss";
-
-import {DBList} from './db-list.jsx';
-import {ApiList} from './auto-res/api-list.jsx';
-//import {HandleBar} from './handle-bar.jsx';
-
-/*
-ReactDOM.render( (
-    <div className={css.wrap}>
-        <IndexedDB storeName="LizhiMockAPI8" keyPath="name" instantUse={window.o_import}>
-            <HandleBar/>
-        </IndexedDB>
-        
-    </div>
-), document.getElementById( 'list' ) );
-*/
+import {App} from './App.jsx';
 
 ReactDOM.render( (
-    <div className={css.wrap}>
-        <DBList storeName="LizhiMockAPI13" keyPath="id" instantUse={window.o_import}/>
+    <App/>
+), document.getElementById( 'root' ) );
 
-    </div>
-), document.getElementById( 'list' ) );
-ReactDOM.render( (
-    <div className={css.wrap}>
-        <ApiList
-            storeName="LizhiMockAPI100"
-            keyPath="id"
-            dataStore="LizhiMockAPI13"
-            datakeyPath="id"
-            socket={new WebSocket('ws://' + window.location.hostname + ":3336")}
-        />
-    </div>
-), document.getElementById( 'auto_res_list' ) );
+//    <div id="root"></div>
