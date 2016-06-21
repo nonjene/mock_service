@@ -21,6 +21,8 @@
     "react-debounce-input": "^2.4.0",
     "react-dom": "^15.0.2",
     "react-intl": "^2.1.2",
+    "react-motion": "^0.4.4",
+    "react-swipeable-views": "^0.6.2",
     "react-tap-event-plugin": "^1.0.0",
     "redis": "^2.6.1",
     "ws": "^1.1.0"
@@ -39,7 +41,6 @@
     "html-webpack-plugin": "^2.15.0",
     "http-proxy": "^1.13.3",
     "imports-loader": "^0.6.5",
-    "jsoneditor": "^5.5.5",
     "node-sass": "^3.7.0",
     "postcss-loader": "^0.9.1",
     "resolve-url-loader": "^1.4.3",

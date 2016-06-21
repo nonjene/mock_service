@@ -8,7 +8,7 @@ var autoprefixer = require( 'autoprefixer' );
 
 var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 
-const ENV = 'DEV';//PRO
+const ENV = 'PRO';//PRO
 
 var CSS_Module_Loader_Pargram;
 

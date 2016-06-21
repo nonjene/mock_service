@@ -78,7 +78,7 @@ export class Left extends React.Component {
 
                     </div>
 
-                    <div ref="jsoneditor" style={{"width": "400px", "height": "400px"}}></div>
+                    <div ref="jsoneditor" style={{"height": "400px"}}></div>
 
                 </div>
 
