@@ -8,7 +8,7 @@ var autoprefixer = require( 'autoprefixer' );
 
 var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 
-const ENV = 'PRO';//PRO
+const ENV = 'DEV';//PRO
 
 var CSS_Module_Loader_Pargram;
 
@@ -33,7 +33,9 @@ var plugins = [
         }
     } )*/
 ];
-if ( ENV === 'PRO' ) {
+if (process.env.NODE_ENV === 'production' ) {
+    console.log( 'export NODE_ENV=production' );
+
     plugins.push(
         new webpack.DefinePlugin( {
             'process.env': {
@@ -47,7 +49,8 @@ if ( ENV === 'PRO' ) {
     CSS_Module_Loader_Pargram = '?modules&importLoaders=1&localIdentName=[hash:12]';
 
 }
-if ( ENV === 'DEV' ) {
+if (process.env.NODE_ENV === 'development' ) {
+    console.log('export NODE_ENV=development');
     plugins.push(
         //live reload
         new LiveReloadPlugin( {
