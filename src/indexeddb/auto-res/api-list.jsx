@@ -188,3 +188,6 @@ export class ApiList extends React.Component {
         );
     }
 }
+ApiList.defaultProps = {
+    dataList: []
+};
