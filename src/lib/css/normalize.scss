@@ -2,18 +2,6 @@ body,html,pre{
     border:0;padding:0;margin:0;
 }
 
-.clearfix {
-    *zoom: 1
-}
-
-.clearfix:after {
-    display: block;
-    overflow: hidden;
-    clear: both;
-    height: 0;
-    visibility: hidden;
-    content: "."
-}
 *{
     box-sizing: border-box;
 
@@ -22,4 +10,28 @@ button,input,textarea{
     &:focus{
         outline: none;
     }
+}
+
+#flex-container {
+    padding: 12px;
+    display: flex;
+    flex-direction: row;
+}
+
+#flex-container > .flex-item {
+    -webkit-flex: auto;
+    flex: auto;
+}
+
+#flex-container > .raw-item {
+    min-width: 30%;
+    margin:0 15px;
+}
+
+#flex-container > .raw-item:nth-of-type(1) {
+    min-width: 400px;
+}
+
+#flex-container > .raw-item:nth-of-type(2) {
+
 }

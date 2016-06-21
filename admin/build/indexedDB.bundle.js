@@ -18,8 +18,6 @@ webpackJsonp([0],[
 
 	_reactDom2.default.render(_react2.default.createElement(_App.App, null), document.getElementById('root'));
 
-	//    <div id="root"></div>
-
 /***/ },
 /* 1 */,
 /* 2 */,
@@ -220,6 +218,8 @@ webpackJsonp([0],[
 
 	var _left = __webpack_require__(387);
 
+	var _log = __webpack_require__(388);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -301,7 +301,10 @@ webpackJsonp([0],[
 	                    _react2.default.createElement(
 	                        "div",
 	                        { className: "raw-item" },
-	                        _react2.default.createElement("div", { id: "log" })
+	                        _react2.default.createElement(_log.Log, {
+	                            ws: this.state.ws,
+	                            reqID: this.reqID.bind(this)
+	                        })
 	                    )
 	                ),
 	                _react2.default.createElement(
@@ -24268,6 +24271,10 @@ webpackJsonp([0],[
 
 	var _TextField2 = _interopRequireDefault(_TextField);
 
+	var _Subheader = __webpack_require__(284);
+
+	var _Subheader2 = _interopRequireDefault(_Subheader);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24314,6 +24321,13 @@ webpackJsonp([0],[
 	            if (preprop.instantUseData !== instantUseData && Object.keys(instantUseData).length > 0) {
 	                this.editor.set(instantUseData);
 	            }
+
+	            //更新id
+	            if (preprop.id !== this.props.id) {
+	                this.setState({
+	                    id: this.props.id
+	                });
+	            }
 	        }
 	    }, {
 	        key: "idChange",
@@ -24343,6 +24357,11 @@ webpackJsonp([0],[
 	                _react2.default.createElement(
 	                    "div",
 	                    null,
+	                    _react2.default.createElement(
+	                        _Subheader2.default,
+	                        null,
+	                        "手工返回数据:"
+	                    ),
 	                    _react2.default.createElement(_TextField2.default, {
 	                        hintText: "id",
 	                        floatingLabelText: "回应ID",
@@ -24365,6 +24384,138 @@ webpackJsonp([0],[
 
 	    return Left;
 	}(_react2.default.Component);
+
+/***/ },
+/* 388 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Log = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _getMuiTheme = __webpack_require__(182);
+
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+
+	var _MuiThemeProvider = __webpack_require__(277);
+
+	var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+	var _Paper = __webpack_require__(337);
+
+	var _Paper2 = _interopRequireDefault(_Paper);
+
+	var _Subheader = __webpack_require__(284);
+
+	var _Subheader2 = _interopRequireDefault(_Subheader);
+
+	var _css = __webpack_require__(389);
+
+	var _css2 = _interopRequireDefault(_css);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Log = exports.Log = function (_React$Component) {
+	    _inherits(Log, _React$Component);
+
+	    function Log(props) {
+	        _classCallCheck(this, Log);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Log).call(this, props));
+
+	        _this.state = {
+	            info: []
+	        };
+	        return _this;
+	    }
+
+	    _createClass(Log, [{
+	        key: "componentDidMount",
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            this.props.ws.onmessage = function (data) {
+	                var pdata = JSON.parse(data.data);
+	                var url = pdata.request.url;
+	                var id = pdata.id;
+	                _this2.setState({
+	                    info: [{ id: id, url: url }].concat(_toConsumableArray(_this2.state.info))
+	                });
+	                _this2.reqID(id);
+	            };
+	        }
+	    }, {
+	        key: "reqID",
+	        value: function reqID(id) {
+	            this.props.reqID(id);
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            var _this3 = this;
+
+	            return _react2.default.createElement(
+	                _MuiThemeProvider2.default,
+	                { muiTheme: (0, _getMuiTheme2.default)() },
+	                _react2.default.createElement(
+	                    "div",
+	                    null,
+	                    _react2.default.createElement(
+	                        _Subheader2.default,
+	                        null,
+	                        "请求Log"
+	                    ),
+	                    this.state.info.map(function (item) {
+	                        return _react2.default.createElement(
+	                            _Paper2.default,
+	                            { key: item.id, zDepth: 1, className: _css2.default.item },
+	                            _react2.default.createElement(
+	                                "p",
+	                                { className: _css2.default.id, onClick: _this3.reqID.bind(_this3, item.id), title: "使用这个ID" },
+	                                "请求ID:",
+	                                item.id
+	                            ),
+	                            _react2.default.createElement(
+	                                "p",
+	                                { className: _css2.default.line },
+	                                "请求URL:",
+	                                item.url
+	                            )
+	                        );
+	                    })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Log;
+	}(_react2.default.Component);
+
+	;
+
+/***/ },
+/* 389 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"item":"src-indexeddb-log-___css__item___1wIl4","line":"src-indexeddb-log-___css__line___3_dM0","id":"src-indexeddb-log-___css__id___1sOWN"};
 
 /***/ }
 ]);

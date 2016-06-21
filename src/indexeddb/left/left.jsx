@@ -3,6 +3,7 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
+import Subheader from "material-ui/Subheader";
 
 
 export class Left extends React.Component {
@@ -33,6 +34,13 @@ export class Left extends React.Component {
             this.editor.set( instantUseData )
         }
 
+        //更新id
+        if(preprop.id !== this.props.id){
+            this.setState({
+                id: this.props.id
+            })
+        }
+
     }
 
     idChange( e ) {
@@ -55,6 +63,7 @@ export class Left extends React.Component {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme()}>
                 <div>
+                    <Subheader>手工返回数据:</Subheader>
                     <TextField
                         hintText="id"
                         floatingLabelText="回应ID"

@@ -5,6 +5,7 @@ import css from "./css.scss";
 import {DBList} from "./db-list.jsx";
 import {ApiList} from "./auto-res/api-list.jsx";
 import {Left} from "./left/left.jsx";
+import {Log} from "./log/log.jsx";
 injectTapEventPlugin();
 
 var ws = new WebSocket( 'ws://' + window.location.hostname + ":3336" );
@@ -58,7 +59,10 @@ export class App extends React.Component {
 
                     </div>
                     <div className="raw-item">
-                        <div id="log"></div>
+                        <Log
+                            ws={this.state.ws}
+                            reqID={this.reqID.bind(this)}
+                        />
                     </div>
                 </div>
                 <div className="second-floor" id="auto_res_list">
