@@ -1,9 +1,20 @@
 const debug = require('./debug');
+const fs = require('fs');
 module.exports = debug;
 
 if (!module.parent) {
     const Koa = require('koa');
     const app = new Koa();
+
+    app.use( function ( ctx, next ) {
+        if (ctx.request.url == '/__debug_test__') {
+            ctx.body = fs.readFileSync( './demo/test.html' );
+            ctx.status = 200;
+            ctx.type = 'text/html; charset=UTF-8';
+        }else{
+            return next()
+        }
+    } );
     app.use(debug({
         port: 3336
     }));
