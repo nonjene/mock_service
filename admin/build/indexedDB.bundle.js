@@ -23882,10 +23882,16 @@ webpackJsonp([0],[
 
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ApiList).call(this, props));
 
+	        var wsAutoRes = void 0;
+	        if (localStorage.wsAutoRes === undefined) {
+	            wsAutoRes = false;
+	        } else {
+	            wsAutoRes = !! +localStorage.wsAutoRes;
+	        }
 	        _this.state = {
 	            list: [], //api列表
 	            msg: '',
-	            wsAutoRes: true //this is static, never changes.
+	            wsAutoRes: wsAutoRes
 	        };
 	        return _this;
 	    }
@@ -23938,7 +23944,6 @@ webpackJsonp([0],[
 	        value: function componentDidUpdate(prevProps) {
 	            if (prevProps.dataList !== this.props.dataList) {
 	                if (!this.WSHandler) return;
-	                console.log('dataList update');
 	                this.WSHandler.dbData = this.props.dataList;
 	            }
 	        }
@@ -23951,11 +23956,13 @@ webpackJsonp([0],[
 	        key: "wsTrunOn",
 	        value: function wsTrunOn() {
 	            this.WSHandler.turnOn();
+	            localStorage.setItem('wsAutoRes', 1);
 	        }
 	    }, {
 	        key: "wsTrunOff",
 	        value: function wsTrunOff() {
 	            this.WSHandler.turnOff();
+	            localStorage.setItem('wsAutoRes', 0);
 	        }
 	    }, {
 	        key: "updData",
