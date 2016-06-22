@@ -32,7 +32,7 @@ export default class WSRes {
                 if(item.id===id){
                     return true
                 }
-            })
+            })[0]
         )
     }
 

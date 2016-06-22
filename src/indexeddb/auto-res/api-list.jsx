@@ -85,6 +85,13 @@ export class ApiList extends React.Component {
             turnOn:this.state.wsAutoRes
         })
     }
+    componentDidUpdate(prevProps){
+        if(prevProps.dataList!==this.props.dataList){
+            if(!this.WSHandler) return;
+            console.log('dataList update')
+            this.WSHandler.dbData = this.props.dataList;
+        }
+    }
 
     wsTurn( e, isChecked ) { (isChecked ? this.wsTrunOn : this.wsTrunOff).call(this); }
 
