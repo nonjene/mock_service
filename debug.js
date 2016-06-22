@@ -39,7 +39,7 @@ function asyc(broadcast, redis, ctx,next) {
             ctx.body = value;
             return;
         }
-        next();
+        return next();
     });
 }
 

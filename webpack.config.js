@@ -20,7 +20,7 @@ var plugins = [
 
     //new webpack.BannerPlugin( 'lizhiFE mock api.' ),
 
-    
+
     /*new HtmlWebpackPlugin( {
         filename: 'indexeddb.html',
         template: 'src/indexeddb/index.html', // Load a custom template
@@ -48,8 +48,7 @@ if (process.env.NODE_ENV === 'production' ) {
     );
     CSS_Module_Loader_Pargram = '?modules&importLoaders=1&localIdentName=[hash:12]';
 
-}
-if (process.env.NODE_ENV === 'development' ) {
+}else {
     console.log('export NODE_ENV=development');
     plugins.push(
         //live reload
