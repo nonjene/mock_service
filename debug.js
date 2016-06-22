@@ -58,6 +58,11 @@ function debug(wsOpt,redisOpt){
     admin.listen(8081);
     const wss = initWSS(admin,wsOpt);
     wss.on('connection', function connection(ws) {
+        //把打开后台的ip发过去。
+        ws.send(JSON.stringify({
+            _conf_:{ip: ws._socket.remoteAddress}
+        }));
+
         ws.on('message', function(data) {
             try{
                 const json = JSON.parse(data);
@@ -65,8 +70,15 @@ function debug(wsOpt,redisOpt){
                 if(json && json.id){
                     id = json.id;
                     redisClient.set(id,data);
+                }else if(json && json._conf_){
+                    //接收后台发来的监听ip
+                    ws.cus_listenIP = json._conf_.ip;
                 }
             } catch (e) { }
+        });
+
+        ws.on('close',function(){
+            ws.cus_listenIP = null;
         });
     });
     function broadcast(data,ip) {
@@ -79,7 +91,8 @@ function debug(wsOpt,redisOpt){
                 backStageIp='127.0.0.1';
             }
 
-            if(client._socket.remoteAddress=== backStageIp){
+            //同一个ip或设置了ip
+            if(client._socket.remoteAddress=== backStageIp || client.cus_listenIP=== backStageIp){
                 client.send( data );
             }
         });

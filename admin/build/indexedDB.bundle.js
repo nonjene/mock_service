@@ -25718,6 +25718,9 @@ webpackJsonp([0],[
 	            var _this = this;
 
 	            data = JSON.parse(data.data);
+	            //不是我这要的数据
+	            if (!data.request || !data.id) return;
+
 	            var url = data.request.url;
 	            this.socketID = data.id;
 
@@ -27087,6 +27090,10 @@ webpackJsonp([0],[
 
 	var _Subheader2 = _interopRequireDefault(_Subheader);
 
+	var _TextField = __webpack_require__(372);
+
+	var _TextField2 = _interopRequireDefault(_TextField);
+
 	var _css = __webpack_require__(408);
 
 	var _css2 = _interopRequireDefault(_css);
@@ -27110,7 +27117,9 @@ webpackJsonp([0],[
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Log).call(this, props));
 
 	        _this.state = {
-	            info: []
+	            info: [],
+	            ip: '',
+	            defIp: ''
 	        };
 	        return _this;
 	    }
@@ -27122,18 +27131,71 @@ webpackJsonp([0],[
 
 	            this.props.ws.onmessage = function (data) {
 	                var pdata = JSON.parse(data.data);
-	                var url = pdata.request.url;
-	                var id = pdata.id;
-	                _this2.setState({
-	                    info: [{ id: id, url: url }].concat(_toConsumableArray(_this2.state.info))
-	                });
-	                _this2.reqID(id);
+	                if (pdata._conf_) {
+
+	                    //接收push来的本机ip
+	                    if (pdata._conf_.ip) {
+	                        var state = {};
+	                        //本地有,就只存到defIp,
+	                        if (!localStorage.remoteIP) {
+	                            state.ip = pdata._conf_.ip;
+	                        }
+	                        state.defIp = pdata._conf_.ip;
+
+	                        _this2.setState(state);
+	                    }
+	                } else {
+	                    var url = pdata.request.url;
+	                    var id = pdata.id;
+	                    _this2.setState({
+	                        info: [{ id: id, url: url }].concat(_toConsumableArray(_this2.state.info))
+	                    });
+	                    _this2.reqID(id);
+	                }
 	            };
+
+	            //get localStorage data
+	            if (localStorage.remoteIP) {
+	                this.setState({
+	                    ip: localStorage.remoteIP
+	                });
+	                this.props.ws.onopen = function () {
+	                    return _this2.sendIpTarget(localStorage.remoteIP);
+	                };
+	            }
+	        }
+	    }, {
+	        key: "sendIpTarget",
+	        value: function sendIpTarget(ip) {
+	            this.props.ws.send(JSON.stringify({
+	                _conf_: { ip: ip }
+	            }));
+	            console.log('send cur-ip:' + ip);
 	        }
 	    }, {
 	        key: "reqID",
 	        value: function reqID(id) {
 	            this.props.reqID(id);
+	        }
+	    }, {
+	        key: "ipChange",
+	        value: function ipChange(e) {
+	            this.setState({ ip: e.target.value });
+	        }
+	    }, {
+	        key: "ipTextBlur",
+	        value: function ipTextBlur(e) {
+	            var val = e.target.value;
+	            if (!val) {
+	                this.setState({ ip: this.state.defIp });
+	            }
+	            //如果是默认那个,就不写localstroage, 因为用户下次登入网络后ip可能变了, 但用户不知道自己设置了ip
+	            if (val !== this.state.defIp) {
+	                localStorage.setItem("remoteIP", val);
+	            } else {
+	                localStorage.setItem("remoteIP", "");
+	            }
+	            this.sendIpTarget(val);
 	        }
 	    }, {
 	        key: "render",
@@ -27151,13 +27213,26 @@ webpackJsonp([0],[
 	                        null,
 	                        "请求Log"
 	                    ),
+	                    _react2.default.createElement(_TextField2.default, {
+	                        hintText: _react2.default.createElement(
+	                            "p",
+	                            { className: _css2.default.textIpHint },
+	                            "开发前端项目的设备的IP地址(默认是当前打开这个后台页面的设备IP)"
+	                        ),
+	                        floatingLabelText: "筛选请求的设备IP",
+	                        fullWidth: true,
+	                        value: this.state.ip,
+	                        onChange: this.ipChange.bind(this),
+	                        onBlur: this.ipTextBlur.bind(this),
+	                        className: _css2.default.textIp
+	                    }),
 	                    this.state.info.map(function (item) {
 	                        return _react2.default.createElement(
 	                            _Paper2.default,
-	                            { key: item.id, zDepth: 1, className: _css2.default.item },
+	                            { key: item.id, zDepth: 1, className: _css2.default.item, onClick: _this3.reqID.bind(_this3, item.id) },
 	                            _react2.default.createElement(
 	                                "p",
-	                                { className: _css2.default.id, onClick: _this3.reqID.bind(_this3, item.id), title: "使用这个ID" },
+	                                { className: _css2.default.id, title: "使用这个ID" },
 	                                "请求ID:",
 	                                item.id
 	                            ),
@@ -27184,7 +27259,7 @@ webpackJsonp([0],[
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"item":"src-indexeddb-log-___css__item___1wIl4","line":"src-indexeddb-log-___css__line___3_dM0","id":"src-indexeddb-log-___css__id___1sOWN"};
+	module.exports = {"item":"src-indexeddb-log-___css__item___1wIl4","line":"src-indexeddb-log-___css__line___3_dM0","id":"src-indexeddb-log-___css__id___1sOWN","textIp":"src-indexeddb-log-___css__textIp___3_jmn","textIpHint":"src-indexeddb-log-___css__textIpHint___2prCc"};
 
 /***/ }
 ]);

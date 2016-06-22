@@ -11,6 +11,9 @@ export default class WSRes {
 
     getMsg( data ) {
         data = JSON.parse( data.data );
+        //不是我这要的数据
+        if(!data.request || !data.id) return;
+
         let url = data.request.url;
         this.socketID = data.id;
 

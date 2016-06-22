@@ -1,9 +1,20 @@
 .item{
     padding:10px;
+    margin-bottom:8px;
+    cursor: pointer;
+
 }
 .line,.id{
     margin:8px 0;
 }
 .id{
-    cursor: pointer;
+}
+.textIp{
+    margin-bottom:12px;
+}
+.textIpHint{
+    font-size: 12px;
+    margin:0;
+    line-height: 1.2;
+
 }
