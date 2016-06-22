@@ -46,7 +46,7 @@ function asyc(broadcast, redis, ctx,next) {
 const initWSS = require('./wss').init;
 const redis = require('redis');
 
-const regIP = /^\:\:\S+\:/;
+const regIP = /^\:\:[a-zA-Z]*\:*/;
 
 function debug(wsOpt,redisOpt){
     const redisClient = redis.createClient(redisOpt);
@@ -73,7 +73,13 @@ function debug(wsOpt,redisOpt){
         if (typeof ip !== 'string') {return console.log( 'err:ip is not a string' )}
 
         wss.clients.forEach(function each(client) {
-            if(client._socket.remoteAddress===ip.replace( regIP,'')){
+            //把 "IPv4-mapped IPv6" 转为ipv4
+            let backStageIp = ip.replace( regIP, '' );
+            if(backStageIp==='1'){
+                backStageIp='127.0.0.1';
+            }
+
+            if(client._socket.remoteAddress=== backStageIp){
                 client.send( data );
             }
         });
