@@ -8,7 +8,8 @@ function waitForResponse(ctx, broadcast, redis) {
     redis.expireat(id, parseInt((+new Date) / 1000) + 100);
     broadcast(JSON.stringify({
         request: ctx.request,
-        id: id
+        id: id,
+        param: ctx.request.body
     }), ctx.ip);
     var repeater = setInterval(function() {
         redis.get(id,function(err, value){

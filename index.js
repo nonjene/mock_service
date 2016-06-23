@@ -5,6 +5,8 @@ module.exports = debug;
 if (!module.parent) {
     const Koa = require('koa');
     const app = new Koa();
+    const koaBody = require( 'koa-body' );
+    app.use( koaBody( {formidable: {uploadDir: __dirname}} ) );
 
     app.use( function ( ctx, next ) {
         if (ctx.request.url == '/__debug_test__') {
