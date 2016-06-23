@@ -6,8 +6,11 @@
 }
 .line,.id{
     margin:8px 0;
+    word-break: break-all;
+
 }
-.id{
+.param{
+    font-size: 14px;
 }
 .textIp{
     margin-bottom:12px;
@@ -17,4 +20,7 @@
     margin:0;
     line-height: 1.2;
 
+}
+.label{
+    color: rgb(0, 188, 212)
 }

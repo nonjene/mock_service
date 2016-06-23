@@ -6,6 +6,8 @@ import Paper from "material-ui/Paper";
 import Subheader from "material-ui/Subheader";
 import TextField from 'material-ui/TextField';
 
+import * as LinkPrase from '../../lib/LinkPrase';
+
 
 import css from "./css.scss";
 
@@ -37,10 +39,22 @@ export class Log extends React.Component {
 
 
             }else{
-                let url = pdata.request.url;
+                let url = LinkPrase.getReqAddr(pdata.request.url);
                 let id = pdata.id;
+                let method = pdata.request.method;
+
+                let par;
+                if(pdata.param && Object.keys( pdata.param).length>0){
+                    par = pdata.param;
+                }else{
+                    par = LinkPrase.getParam( pdata.request.url );
+                }
+                par = par? JSON.stringify( par ):'none';
+                //这个log留下来
+                console.log( pdata);
+
                 this.setState( {
-                    info: [{id, url}, ...this.state.info]
+                    info: [{id, url, par, method, more: data.data}, ...this.state.info]
                 } );
                 this.reqID( id );
             }
@@ -104,9 +118,18 @@ export class Log extends React.Component {
                     {
                     this.state.info.map(item=> {
                         return (
-                            <Paper key={item.id} zDepth={1} className={css.item} onClick={this.reqID.bind(this,item.id)}>
-                                <p className={css.id} title="使用这个ID">请求ID:{item.id}</p>
-                                <p className={css.line}>请求URL:{item.url}</p>
+                            <Paper key={item.id} zDepth={1} className={css.item} onClick={this.reqID.bind(this,item.id)} title={item.more}>
+                                <p className={css.id} title="使用这个ID">
+                                    <span className={css.label}>请求ID:</span>{item.id}
+                                </p>
+                                <p className={css.line}>
+                                    <span className={css.xlabel}>{item.method}:</span>
+                                     {item.url}
+                                </p>
+                                <p className={css.line}>
+                                    <span className={css.xlabel}>参数:</span>
+                                    <span className={css.param}>{item.par}</span>
+                                </p>
                             </Paper>
                         )
                     })

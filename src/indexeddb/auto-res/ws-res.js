@@ -1,3 +1,5 @@
+import * as LinkPrase from '../../lib/LinkPrase';
+
 export default class WSRes {
     constructor( {dbApi, dbData, webSocket, ...opt} ) {
         this.opt = opt;
@@ -14,7 +16,8 @@ export default class WSRes {
         //不是我这要的数据
         if(!data.request || !data.id) return;
 
-        let url = data.request.url;
+        let url = LinkPrase.getReqAddr( data.request.url );
+
         this.socketID = data.id;
 
         this.dbApi.promiseOpenStore
