@@ -9,6 +9,7 @@ export default class WSRes {
         if(opt.turnOn){
             this.turnOn();
         }
+        this.webSocket.on( 'message', this.getMsgWrap.bind( this ) )
     }
 
     getMsg( data ) {
@@ -48,11 +49,20 @@ export default class WSRes {
             id: this.socketID
         } ) );
     }
+    getMsgWrap(data){
+        if(this.flagTurn==='on'){
+            return this.getMsg( data);
+        }else{
+            return function(){}
+        }
+    }
     turnOn(){
-        this.webSocket.onmessage = this.getMsg.bind( this )
+        this.flagTurn = 'on';
+        //this.webSocket.onmessage = this.getMsg.bind( this )
     }
     turnOff(){
-        this.webSocket.onmessage = null
+        this.flagTurn = 'off';
+        //this.webSocket.onmessage = null
     }
     onNoApiFound(){}
 };

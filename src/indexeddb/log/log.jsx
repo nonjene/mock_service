@@ -21,7 +21,7 @@ export class Log extends React.Component {
         }
     }
     componentDidMount(){
-        this.props.ws.onmessage = data=>{
+        this.props.ws.on('message', data=>{
             let pdata = JSON.parse( data.data );
             if(pdata._conf_){
 
@@ -59,7 +59,7 @@ export class Log extends React.Component {
                 this.reqID( id );
             }
 
-        };
+        } );
 
         //get localStorage data
         if(localStorage.remoteIP){
