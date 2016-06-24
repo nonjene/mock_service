@@ -1,40 +1,30 @@
 const debug = require('./debug');
-<<<<<<< HEAD
-const confit = require('confit');
-=======
+const path = require('path');
 const fs = require('fs');
->>>>>>> 9e5b86226d4a9b36fa410140b48a8caae70662d3
 module.exports = debug;
 
 if (!module.parent) {
     const Koa = require('koa');
+    const confit = require('confit');
     const app = new Koa();
-<<<<<<< HEAD
-    app.use(function(ctx,next){
-        return next();
-    });
-=======
-    const koaBody = require( 'koa-body' );
-    app.use( koaBody( {formidable: {uploadDir: __dirname}} ) );
-
-    app.use( function ( ctx, next ) {
-        if (ctx.request.url == '/__debug_test__') {
-            ctx.body = fs.readFileSync( './demo/test.html' );
-            ctx.status = 200;
-            ctx.type = 'text/html; charset=UTF-8';
-        }else{
-            return next()
+    const koaBody = require('koa-better-body');
+    const basedir = path.join(__dirname, 'config');
+    confit(basedir).create(function(err, config) {
+        if (err) {
+            throw err;
         }
-    } );
->>>>>>> 9e5b86226d4a9b36fa410140b48a8caae70662d3
-    app.use(debug({
-        host: "192.168.6.73",
-        port: 3336,
-        path: "fe-debug-service"
-    }));
-    app.use(function(ctx,next){
-        ctx.body="not found";
-        ctx.status=404;
+        app.use(koaBody());
+        app.use(debug({
+            webSocketConfig: config.get("webSocketConfig") || {},
+            redisConfig: config.get("redisConfig") || {
+                port: 3336
+            },
+            adminPort: config.get("adminPort")
+        }));
+        app.use(function(ctx, next) {
+            ctx.body = "not found";
+            ctx.status = 404;
+        });
+        app.listen(config.get("port") || 3000);
     });
-    app.listen(3000);
 }

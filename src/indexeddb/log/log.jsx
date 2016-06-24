@@ -23,15 +23,6 @@ export class Log extends React.Component {
     componentDidMount(){
         this.props.ws.on('message', data=>{
             let pdata = JSON.parse( data.data );
-<<<<<<< HEAD
-            let url = pdata.request.url;
-            let id = pdata.id;
-            let request = JSON.stringify(pdata.request);
-            this.setState({
-                info:[{id, url,request},...this.state.info]
-            });
-            this.reqID(id);
-=======
             if(pdata._conf_){
 
                 //接收push来的本机ip
@@ -76,8 +67,6 @@ export class Log extends React.Component {
                 ip: localStorage.remoteIP
             } );
             this.props.ws.onopen=()=> this.sendIpTarget( localStorage.remoteIP );
-
->>>>>>> 9e5b86226d4a9b36fa410140b48a8caae70662d3
         }
     }
     sendIpTarget(ip){
@@ -128,11 +117,6 @@ export class Log extends React.Component {
                     {
                     this.state.info.map(item=> {
                         return (
-<<<<<<< HEAD
-                            <Paper key={item.id} zDepth={1} className={css.item}>
-                                <p className={css.id} onClick={this.reqID.bind(this,item.id)} title="使用这个ID">请求ID:{item.id}</p>
-                                <p className={css.line} title={item.request}>请求URL:{item.url}</p>
-=======
                             <Paper key={item.id} zDepth={1} className={css.item} onClick={this.reqID.bind(this,item.id)} title={item.more}>
                                 <p className={css.id} title="使用这个ID">
                                     <span className={css.label}>请求ID:</span>{item.id}
@@ -145,7 +129,6 @@ export class Log extends React.Component {
                                     <span className={css.xlabel}>参数:</span>
                                     <span className={css.param}>{item.par}</span>
                                 </p>
->>>>>>> 9e5b86226d4a9b36fa410140b48a8caae70662d3
                             </Paper>
                         )
                     })
