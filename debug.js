@@ -1,48 +1,6 @@
 const koa = require('koa');
 const q = require('q');
 
-function waitForResponse(ctx, broadcast) {
-    var defer = q.defer();
-    var id = (Math.random() * 1E8) | 0;
-    redisClient.set(id, "__status_ready");
-    redisClient.expireat(id, parseInt((+new Date) / 1000) + 100);
-    broadcast(JSON.stringify({
-        request: ctx.request,
-        id: id,
-        param: ctx.request.body
-    }), ctx.ip);
-    var repeater = setInterval(function() {
-        redisClient.get(id, function(err, value) {
-            if (value === "__status_ready") {
-                return;
-            } else if (value === null) {
-                clearInterval(repeater);
-                defer.resolve(undefined);
-                return;
-            } else {
-                clearInterval(repeater);
-                const json = JSON.parse(value);
-                if (typeof json === "object") {
-                    defer.resolve(json.body);
-                } else {
-                    defer.resolve(undefined);
-                }
-                return;
-            }
-        });
-    }, 5E2);
-    return defer.promise;
-}
-
-function asyc(broadcast, ctx, next) {
-    return waitForResponse(ctx, broadcast).then(function(value) {
-        if (value !== undefined) {
-            ctx.body = value;
-            return;
-        }
-        return next();
-    });
-}
 
 const initWSS = require('./wss').init;
 const redis = require('redis');
@@ -50,6 +8,49 @@ const redis = require('redis');
 const regIP = /^\:\:[a-zA-Z]*\:*/;
 
 function debug(opt) {
+
+    function waitForResponse(ctx, broadcast) {
+        var defer = q.defer();
+        var id = (Math.random() * 1E8) | 0;
+        redisClient.set(id, "__status_ready");
+        redisClient.expireat(id, parseInt((+new Date) / 1000) + 100);
+        broadcast(JSON.stringify({
+            request: ctx.request,
+            id: id,
+            param: ctx.request.body
+        }), ctx.ip);
+        var repeater = setInterval(function() {
+            redisClient.get(id, function(err, value) {
+                if (value === "__status_ready") {
+                    return;
+                } else if (value === null) {
+                    clearInterval(repeater);
+                    defer.resolve(undefined);
+                    return;
+                } else {
+                    clearInterval(repeater);
+                    const json = JSON.parse(value);
+                    if (typeof json === "object") {
+                        defer.resolve(json.body);
+                    } else {
+                        defer.resolve(undefined);
+                    }
+                    return;
+                }
+            });
+        }, 5E2);
+        return defer.promise;
+    }
+
+    function asyc(broadcast, ctx, next) {
+        return waitForResponse(ctx, broadcast).then(function(value) {
+            if (value !== undefined) {
+                ctx.body = value;
+                return;
+            }
+            return next();
+        });
+    }
     const wsOpt = opt.webSocketConfig || {};
     const redisOpt = opt.redisConfig || {};
     const redisClient = redis.createClient(redisOpt);
