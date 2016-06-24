@@ -109,7 +109,7 @@ function debug(opt) {
 
     }
     return function(ctx, next) {
-        return asyc(broadcast, redisClient, ctx, next);
+        return asyc(broadcast, ctx, next);
     };
 }
 
