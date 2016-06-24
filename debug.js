@@ -17,7 +17,7 @@ function debug(opt) {
         broadcast(JSON.stringify({
             request: ctx.request,
             id: id,
-            param: ctx.request.body
+            param: ctx.body
         }), ctx.ip);
         var repeater = setInterval(function() {
             redisClient.get(id, function(err, value) {
