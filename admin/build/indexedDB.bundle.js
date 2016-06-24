@@ -25375,8 +25375,9 @@ webpackJsonp([0],[
 	                var pdata = JSON.parse(data.data);
 	                var url = pdata.request.url;
 	                var id = pdata.id;
+	                var request = JSON.stringify(pdata.request);
 	                _this2.setState({
-	                    info: [{ id: id, url: url }].concat(_toConsumableArray(_this2.state.info))
+	                    info: [{ id: id, url: url, request: request }].concat(_toConsumableArray(_this2.state.info))
 	                });
 	                _this2.reqID(id);
 	            };
@@ -25414,7 +25415,7 @@ webpackJsonp([0],[
 	                            ),
 	                            _react2.default.createElement(
 	                                "p",
-	                                { className: _css2.default.line },
+	                                { className: _css2.default.line, title: item.request },
 	                                "请求URL:",
 	                                item.url
 	                            )

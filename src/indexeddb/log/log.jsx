@@ -19,8 +19,9 @@ export class Log extends React.Component {
             let pdata = JSON.parse( data.data );
             let url = pdata.request.url;
             let id = pdata.id;
+            let request = JSON.stringify(pdata.request);
             this.setState({
-                info:[{id, url},...this.state.info]
+                info:[{id, url,request},...this.state.info]
             });
             this.reqID(id);
         }
@@ -39,7 +40,7 @@ export class Log extends React.Component {
                         return (
                             <Paper key={item.id} zDepth={1} className={css.item}>
                                 <p className={css.id} onClick={this.reqID.bind(this,item.id)} title="使用这个ID">请求ID:{item.id}</p>
-                                <p className={css.line}>请求URL:{item.url}</p>
+                                <p className={css.line} title={item.request}>请求URL:{item.url}</p>
                             </Paper>
                         )
                     })
