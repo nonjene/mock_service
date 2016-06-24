@@ -42,10 +42,16 @@ function genEmptyData() {
 export class ApiList extends React.Component {
     constructor( props ) {
         super( props );
+        let wsAutoRes;
+        if(localStorage.wsAutoRes===undefined){
+            wsAutoRes = false;
+        }else{
+            wsAutoRes = !!(+localStorage.wsAutoRes);
+        }
         this.state = {
             list: [],//api列表
             msg: '',
-            wsAutoRes:true //this is static, never changes.
+            wsAutoRes
         }
     }
 
@@ -85,12 +91,24 @@ export class ApiList extends React.Component {
             turnOn:this.state.wsAutoRes
         })
     }
+    componentDidUpdate(prevProps){
+        if(prevProps.dataList!==this.props.dataList){
+            if(!this.WSHandler) return;
+            this.WSHandler.dbData = this.props.dataList;
+        }
+    }
 
     wsTurn( e, isChecked ) { (isChecked ? this.wsTrunOn : this.wsTrunOff).call(this); }
 
-    wsTrunOn() { this.WSHandler.turnOn() }
+    wsTrunOn() {
+        this.WSHandler.turnOn();
+        localStorage.setItem('wsAutoRes',1);
+    }
 
-    wsTrunOff() { this.WSHandler.turnOff() }
+    wsTrunOff() {
+        this.WSHandler.turnOff();
+        localStorage.setItem( 'wsAutoRes', 0 );
+    }
 
     updData( id, prop ) {
         var newData = {};

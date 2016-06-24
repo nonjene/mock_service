@@ -49,3 +49,7 @@ div.jsoneditor-menu{
 div.jsoneditor{
     border-color: rgb(0, 188, 212);
 }
+//slide component has bug, hack that.
+.slide-root>div{
+    height: auto!important
+}

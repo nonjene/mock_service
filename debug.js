@@ -8,7 +8,8 @@ function waitForResponse(ctx, broadcast, redis) {
     redis.expireat(id, parseInt((+new Date) / 1000) + 100);
     broadcast(JSON.stringify({
         request: ctx.request,
-        id: id
+        id: id,
+        param: ctx.request.body
     }), ctx.ip);
     var repeater = setInterval(function() {
         redis.get(id,function(err, value){
@@ -46,7 +47,7 @@ function asyc(broadcast, redis, ctx,next) {
 const initWSS = require('./wss').init;
 const redis = require('redis');
 
-const regIP = /^\:\:\S+\:/;
+const regIP = /^\:\:[a-zA-Z]*\:*/;
 
 function debug(wsOpt,redisOpt){
     const redisClient = redis.createClient(redisOpt);
@@ -58,6 +59,11 @@ function debug(wsOpt,redisOpt){
     admin.listen(8081);
     const wss = initWSS(admin,wsOpt);
     wss.on('connection', function connection(ws) {
+        //把打开后台的ip发过去。
+        ws.send(JSON.stringify({
+            _conf_:{ip: ws._socket.remoteAddress}
+        }));
+
         ws.on('message', function(data) {
             try{
                 const json = JSON.parse(data);
@@ -65,15 +71,29 @@ function debug(wsOpt,redisOpt){
                 if(json && json.id){
                     id = json.id;
                     redisClient.set(id,data);
+                }else if(json && json._conf_){
+                    //接收后台发来的监听ip
+                    ws.cus_listenIP = json._conf_.ip;
                 }
             } catch (e) { }
+        });
+
+        ws.on('close',function(){
+            ws.cus_listenIP = null;
         });
     });
     function broadcast(data,ip) {
         if (typeof ip !== 'string') {return console.log( 'err:ip is not a string' )}
 
         wss.clients.forEach(function each(client) {
-            if(client._socket.remoteAddress===ip.replace( regIP,'')){
+            //把 "IPv4-mapped IPv6" 转为ipv4
+            let backStageIp = ip.replace( regIP, '' );
+            if(backStageIp==='1'){
+                backStageIp='127.0.0.1';
+            }
+
+            //同一个ip或设置了ip
+            if(client._socket.remoteAddress=== backStageIp || client.cus_listenIP=== backStageIp){
                 client.send( data );
             }
         });

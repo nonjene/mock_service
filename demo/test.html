@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var myHeaders = new Headers( {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        "X-Custom-Header": "ProcessThisImmediately"
+    } );
+    var oData = new FormData();
+    oData.append( 'token', "dasdsa" );
+
+    var opt = {
+        method: 'POST',
+        body: "token=121121&deviceId=dsasasda",
+        headers: myHeaders
+    };
+
+    fetch( "/ok", opt ).then( function ( res ) {
+        return res.json();
+    } ).then( function ( json ) {
+        console.log( json )
+    } )
+</script>
+</body>
+</html>

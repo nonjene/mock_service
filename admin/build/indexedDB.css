@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body,
 html,
 pre {
@@ -111,3 +112,6 @@ div.jsoneditor {
 }
 
 /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiL1VzZXJzL3l1aGFvbWluZy9naXQvZGVidWctc2VydmljZS9zcmMvaW5kZXhlZGRiL2xvZy9jc3Muc2NzcyIsInNvdXJjZXMiOlsiL1VzZXJzL3l1aGFvbWluZy9naXQvZGVidWctc2VydmljZS9zcmMvaW5kZXhlZGRiL2xvZy9jc3Muc2NzcyJdLCJzb3VyY2VzQ29udGVudCI6WyIuaXRlbXtcbiAgICBwYWRkaW5nOjEwcHg7XG59XG4ubGluZSwuaWR7XG4gICAgbWFyZ2luOjhweCAwO1xufVxuLmlke1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbn0iXSwibWFwcGluZ3MiOiJBQUFBLEFBQUEsS0FBSyxDQUFBO0VBQ0QsT0FBTyxFQUFDLElBQUssR0FDaEI7O0FBQ0QsQUFBQSxLQUFLLEVBQUMsQUFBQSxHQUFHLENBQUE7RUFDTCxNQUFNLEVBQUMsS0FBTSxHQUNoQjs7QUFDRCxBQUFBLEdBQUcsQ0FBQTtFQUNDLE1BQU0sRUFBRSxPQUFRLEdBQ25CIiwibmFtZXMiOltdfQ== */
+=======
+body,html,pre{border:0;padding:0;margin:0}*{box-sizing:border-box}button:focus,input:focus,textarea:focus{outline:none}#flex-container{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row}#flex-container>.flex-item{-webkit-box-flex:1;-ms-flex:auto;flex:auto}#flex-container>.raw-item{width:25%;margin:0 12px}#flex-container>.raw-item:nth-of-type(1){width:45%;max-width:500px;min-width:300px}#flex-container>.raw-item:nth-of-type(2){width:30%}.second-floor{box-shadow:inset 0 5px 10px -5px rgba(0,0,0,.2)}div.jsoneditor-menu{background-color:#00bcd4}div.jsoneditor,div.jsoneditor-menu{border-color:#00bcd4}.slide-root>div{height:auto!important}.b3bf02d6199c .jsoneditor,.b3bf02d6199c div.jsoneditor-tree{font-family:PingFang SC;min-height:180px}.fadd9b8c435d{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap}.c4e5ee7878a2{width:300px;margin:12px;padding:10px;position:relative}.c4e5ee7878a2 header{padding-bottom:10px}._48bc8d3a1ab4{margin-left:16px}.a0b579a612f5{position:absolute;top:0;right:0}.ee8a44cf9351{margin-bottom:16px}._2e5bda0d752a{padding:10px;margin-bottom:8px;cursor:pointer}._18cd2d315bc7,.ca834ce46b3e{margin:8px 0;word-break:break-all}._0bfcc71202b7{font-size:14px}.cc6e213ac50a{margin-bottom:12px}.eff7743f816a{font-size:12px;margin:0;line-height:1.2}.b95c0452b34b{color:#00bcd4}
+>>>>>>> 9e5b86226d4a9b36fa410140b48a8caae70662d3

@@ -25,6 +25,21 @@ const styles = {
     }
 };
 var ws = new WebSocket( 'ws://' + window.location.hostname + ":3336" );
+//var ws2 = new WebSocket( 'ws://' + window.location.hostname + ":3336" );
+
+//这还没有解绑功能,
+ws.onmessageCallbackSlot=[];
+ws.onmessage=function(data){
+    ws.onmessageCallbackSlot.forEach(func=>func( data));
+};
+ws.on = function (eve,func) {
+    if(eve=='message'){
+        if(!ws.onmessageCallbackSlot){
+            ws.onmessageCallbackSlot = [];
+        }
+        ws.onmessageCallbackSlot.push( func);
+    }
+};
 
 export class App extends React.Component {
     constructor( props ) {
@@ -85,7 +100,7 @@ export class App extends React.Component {
                         <Tab label="主面板" value={0} route="/home"/>
                         <Tab label="自动匹配" value={1} route="/second"/>
                     </Tabs>
-                    <SwipeableViews index={this.state.tabIndex} onChangeIndex={this.tabChange.bind(this)}>
+                    <SwipeableViews index={this.state.tabIndex} onChangeIndex={this.tabChange.bind(this)} className='slide-root' >
                         <div style={styles.slide}>
                             <div id="flex-container">
                                 <div className="raw-item">
@@ -115,7 +130,7 @@ export class App extends React.Component {
                                 storeName="LizhiMockAPI100"
                                 keyPath="id"
                                 dataList={this.state.dataList}
-                                socket={new WebSocket('ws://' + window.location.hostname + ":3336")}
+                                socket={ws}
                                 need
                             />
                         </div>

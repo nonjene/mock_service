@@ -1,3 +1,5 @@
+import * as LinkPrase from '../../lib/LinkPrase';
+
 export default class WSRes {
     constructor( {dbApi, dbData, webSocket, ...opt} ) {
         this.opt = opt;
@@ -7,11 +9,16 @@ export default class WSRes {
         if(opt.turnOn){
             this.turnOn();
         }
+        this.webSocket.on( 'message', this.getMsgWrap.bind( this ) )
     }
 
     getMsg( data ) {
         data = JSON.parse( data.data );
-        let url = data.request.url;
+        //不是我这要的数据
+        if(!data.request || !data.id) return;
+
+        let url = LinkPrase.getReqAddr( data.request.url );
+
         this.socketID = data.id;
 
         this.dbApi.promiseOpenStore
@@ -32,7 +39,7 @@ export default class WSRes {
                 if(item.id===id){
                     return true
                 }
-            })
+            })[0]
         )
     }
 
@@ -42,11 +49,20 @@ export default class WSRes {
             id: this.socketID
         } ) );
     }
+    getMsgWrap(data){
+        if(this.flagTurn==='on'){
+            return this.getMsg( data);
+        }else{
+            return function(){}
+        }
+    }
     turnOn(){
-        this.webSocket.onmessage = this.getMsg.bind( this )
+        this.flagTurn = 'on';
+        //this.webSocket.onmessage = this.getMsg.bind( this )
     }
     turnOff(){
-        this.webSocket.onmessage = null
+        this.flagTurn = 'off';
+        //this.webSocket.onmessage = null
     }
     onNoApiFound(){}
 };
