@@ -1,5 +1,5 @@
 {
-  "name": "debug_service",
+  "name": "mock_serivce",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,6 +14,7 @@
     "confit": "^2.0.3",
     "koa": "^2.0.0",
     "koa-better-body": "^2.0.1",
+    "koa-gzip": "^0.1.0",
     "koa-static": "^3.0.0",
     "q": "^1.4.1",
     "redis": "^2.6.1",

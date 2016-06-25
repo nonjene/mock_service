@@ -1,4 +1,3 @@
-const koa = require('koa');
 const q = require('q');
 
 
@@ -58,6 +57,9 @@ function debug(opt) {
     const serve = require('koa-static');
     const Koa = require('koa');
     const admin = new Koa();
+    const gzip = require( 'koa-gzip' );
+
+    admin.use( gzip() );
     admin.use(serve(__dirname + '/admin/'));
     admin.listen(opt.adminPort || 8081);
     const wss = initWSS(admin, wsOpt);
