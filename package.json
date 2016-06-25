@@ -1,5 +1,5 @@
 {
-  "name": "mock_serivce",
+  "name": "mock_service",
   "version": "1.0.0",
   "description": "A mock API data service for frontend development.",
   "main": "index.js",
@@ -74,7 +74,8 @@
     "mock service",
     "mock api",
     "frontend",
-    "debug"
+    "debug",
+    "接口模拟"
   ],
   "bugs": {
     "url": "https://github.com/nonjene/mock_service/issues"
