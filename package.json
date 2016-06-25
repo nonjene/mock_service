@@ -1,15 +1,15 @@
 {
   "name": "mock_serivce",
   "version": "1.0.0",
-  "description": "",
+  "description": "A mock API data service for frontend development.",
   "main": "index.js",
   "scripts": {
     "watch": "webpack --progress --colors --watch",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "nonjene,tamamaxox",
+  "license": "MIT",
   "dependencies": {
     "koa": "^2.0.0",
     "koa-better-body": "^2.0.1",
@@ -65,5 +65,19 @@
       "es2015"
     ],
     "ignore": []
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nonjene/mock_service.git"
+  },
+  "keywords": [
+    "mock service",
+    "mock api",
+    "frontend",
+    "debug"
+  ],
+  "bugs": {
+    "url": "https://github.com/nonjene/mock_service/issues"
+  },
+  "homepage": "https://github.com/nonjene/mock_service#readme"
 }
