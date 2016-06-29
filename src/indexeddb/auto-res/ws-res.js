@@ -30,16 +30,12 @@ export default class WSRes {
         if(!route){
             return this.onNoApiFound()
         }
-        var id = route.target_id;
+        let id = route.target_id;
         /*this.dbData.promiseOpenStore
             .then( db=>db.readOne( id ) )
             .then( data=>this.sendMsg(data) );*/
         this.sendMsg(
-            this.dbData.filter(item=>{
-                if(item.id===id){
-                    return true
-                }
-            })[0]
+            this.dbData.filter(item => item.id === id)[0]
         )
     }
 
