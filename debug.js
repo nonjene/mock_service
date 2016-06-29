@@ -12,7 +12,7 @@ function debug(opt) {
         var defer = q.defer();
         var id = (Math.random() * 1E8) | 0;
         redisClient.set(id, "__status_ready");
-        redisClient.expireat(id, parseInt((+new Date) / 1000) + 100);
+        redisClient.expireat(id, parseInt(Date.now() / 1000) + 100);
         broadcast(JSON.stringify({
             request: ctx.request,
             id: id,
@@ -21,20 +21,21 @@ function debug(opt) {
         var repeater = setInterval(function() {
             redisClient.get(id, function(err, value) {
                 if (value === "__status_ready") {
-                    return;
+                    //continue
                 } else if (value === null) {
                     clearInterval(repeater);
                     defer.resolve(undefined);
-                    return;
+
                 } else {
                     clearInterval(repeater);
                     const json = JSON.parse(value);
+                    redisClient.expireat( id, 0 );
                     if (typeof json === "object") {
                         defer.resolve(json.body);
                     } else {
                         defer.resolve(undefined);
                     }
-                    return;
+
                 }
             });
         }, 5E2);
@@ -86,7 +87,6 @@ function debug(opt) {
                 if (json && json.id) {
                     id = json.id;
                     redisClient.set(id, data);
-                    redisClient.expireat(id, parseInt((+new Date) / 1000) + 1);
                 } else if (json && json._conf_) {
                     //接收后台发来的监听ip
                     ws.cus_listenIP = json._conf_.ip;
