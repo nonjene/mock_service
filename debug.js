@@ -57,10 +57,18 @@ function debug(opt) {
     const serve = require('koa-static');
     const Koa = require('koa');
     const admin = new Koa();
-    const gzip = require( 'koa-gzip' );
+    const compress = require( 'koa-compress' );
+    const conditional = require( 'koa-conditional-get' );
+    const etag = require( 'koa-etag' );
 
-    admin.use( gzip() );
-    admin.use(serve(__dirname + '/admin/'));
+    admin.use( compress( {
+        flush: require( 'zlib' ).Z_SYNC_FLUSH
+    } ) );
+    admin.use( conditional() );
+    admin.use( etag());
+    admin.use(serve(__dirname + '/admin/',{
+        maxage: 31536000000
+    }));
     admin.listen(opt.adminPort || 8081);
     const wss = initWSS(admin, wsOpt);
     wss.on('connection', function connection(ws) {
