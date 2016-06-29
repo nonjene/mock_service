@@ -1,6 +1,6 @@
 {
   "name": "mock_service",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A mock API data service for frontend development.",
   "main": "index.js",
   "scripts": {

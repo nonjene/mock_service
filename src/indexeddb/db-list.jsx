@@ -8,10 +8,10 @@ import css from "./db-list.scss";
 
 
 const SampleData = {
-    "id": "111",
-    "desc": "描述",
-    "slug": "string",
-    "body": {rcode: 0, msg: "success", data: []}
+    "id": "528491",
+    "desc": "数据例子",
+    "slug": "¬_¬",
+    "body": {code: 0, msg: "success", data: "hello world!"}
 };
 
 

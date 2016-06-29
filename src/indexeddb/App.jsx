@@ -115,7 +115,7 @@ export class App extends React.Component {
                                 <div className="raw-item">
                                     <DBList onRender={this.doForceUpdate.bind(this)}
                                         onUpdateData={this.dataListUpdated.bind(this)}
-                                        storeName="LizhiMockAPI13" keyPath="id" instantUse={this.instantUse.bind(this)} addData={this.state.addData} />
+                                        storeName="MockService002" keyPath="id" instantUse={this.instantUse.bind(this)} addData={this.state.addData} />
                                 </div>
                                 <div className="raw-item">
                                     <Log
@@ -127,7 +127,7 @@ export class App extends React.Component {
                         </div>
                         <div style={styles.slide}>
                             <ApiList
-                                storeName="LizhiMockAPI100"
+                                storeName="MockService100"
                                 keyPath="id"
                                 dataList={this.state.dataList}
                                 socket={ws}

@@ -28,8 +28,8 @@ const iconButtonElement = (
 );
 const SampleData = {
     id: '123123',
-    addr: 'xxx/yyy',
-    target_id: '123456789'
+    addr: '/',
+    target_id: '528491'
 };
 function genEmptyData() {
     return {
