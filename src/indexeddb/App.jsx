@@ -35,7 +35,7 @@ export class App extends React.Component {
             id:  '',
             addData:{},
             instantUseData:{},
-            tabIndex:0,
+            tabIndex: this.props.route || 0,
             dataList:[] //嗯, 数据在db-list组件里面获取的。。。忍住别笑
 
         }
@@ -67,6 +67,9 @@ export class App extends React.Component {
         this.setState( {
             tabIndex: value
         } );
+        try{
+            this.props.routeChange(value)
+        }catch(e){}
     };
 
     dataListUpdated( dataList){
@@ -83,8 +86,8 @@ export class App extends React.Component {
                         onChange={this.tabChange.bind(this)}
                         value={this.state.tabIndex}
                     >
-                        <Tab label="主面板" value={0} route="/home"/>
-                        <Tab label="自动匹配" value={1} route="/second"/>
+                        <Tab label="主面板" value={0}/>
+                        <Tab label="自动匹配" value={1}/>
                     </Tabs>
                     <SwipeableViews index={this.state.tabIndex} onChangeIndex={this.tabChange.bind(this)} className='slide-root' >
                         <div style={styles.slide}>
