@@ -9,8 +9,11 @@ import {DBList} from "./db-list.jsx";
 import {ApiList} from "./auto-res/api-list.jsx";
 import {Left} from "./left/left.jsx";
 import {Log} from "./log/log.jsx";
+import {initWs} from '../lib/ws';
 // From https://github.com/oliviertassinari/react-swipeable-views
 injectTapEventPlugin();
+
+const ws = initWs();
 
 //tab style
 const styles = {
@@ -24,29 +27,12 @@ const styles = {
         padding: 10
     }
 };
-var ws = new WebSocket( 'ws://' + window.location.hostname + ":3336" );
-//var ws2 = new WebSocket( 'ws://' + window.location.hostname + ":3336" );
-
-//这还没有解绑功能,
-ws.onmessageCallbackSlot=[];
-ws.onmessage=function(data){
-    ws.onmessageCallbackSlot.forEach(func=>func( data));
-};
-ws.on = function (eve,func) {
-    if(eve=='message'){
-        if(!ws.onmessageCallbackSlot){
-            ws.onmessageCallbackSlot = [];
-        }
-        ws.onmessageCallbackSlot.push( func);
-    }
-};
 
 export class App extends React.Component {
     constructor( props ) {
         super( props );
         this.state = {
             id:  '',
-            ws: ws,
             addData:{},
             instantUseData:{},
             tabIndex:0,
@@ -106,7 +92,7 @@ export class App extends React.Component {
                                 <div className="raw-item">
                                     <Left
                                         id={this.state.id}
-                                        ws={this.state.ws}
+                                        ws={ws}
                                         add={this.add.bind(this)}
                                         instantUseData={this.state.instantUseData}
                                     />
@@ -119,7 +105,7 @@ export class App extends React.Component {
                                 </div>
                                 <div className="raw-item">
                                     <Log
-                                        ws={this.state.ws}
+                                        ws={ws}
                                         reqID={this.reqID.bind(this)}
                                     />
                                 </div>
