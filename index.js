@@ -1,9 +1,10 @@
 const debug = require('./debug');
+
 module.exports = debug;
 
 if (!module.parent) {
-    const path = require( 'path' );
-    const fs = require( 'fs' );
+    const path = require('path');
+    const fs = require('fs');
     const Koa = require('koa');
     const confit = require('confit');
     const app = new Koa();
@@ -14,23 +15,24 @@ if (!module.parent) {
             throw err;
         }
         app.use(koaBody());
-        
-        app.use( function ( ctx, next ) {
+
+        app.use(function(ctx, next) {
             if (ctx.request.url == '/__debug_test__') {
-                ctx.body = fs.readFileSync( './demo/test.html' );
+                ctx.body = fs.readFileSync('./demo/test.html');
                 ctx.status = 200;
                 ctx.type = 'text/html; charset=UTF-8';
             } else {
                 return next()
             }
-        } );
+        });
 
         app.use(debug({
             webSocketConfig: config.get("webSocketConfig") || {},
             redisConfig: config.get("redisConfig") || {
                 port: 3336
             },
-            adminPort: config.get("adminPort")
+            adminPort: config.get("adminPort"),
+            servicePort:config.get("port")
         }));
         app.use(function(ctx, next) {
             ctx.body = "not found";

@@ -29,7 +29,7 @@ function debug(opt) {
                 } else {
                     clearInterval(repeater);
                     const json = JSON.parse(value);
-                    redisClient.expireat( id, 0 );
+                    redisClient.expireat(id, 0);
                     if (typeof json === "object") {
                         defer.resolve(json.body);
                     } else {
@@ -58,18 +58,26 @@ function debug(opt) {
     const serve = require('koa-static');
     const Koa = require('koa');
     const admin = new Koa();
-    const compress = require( 'koa-compress' );
-    const conditional = require( 'koa-conditional-get' );
-    const etag = require( 'koa-etag' );
+    const compress = require('koa-compress');
+    const conditional = require('koa-conditional-get');
+    const etag = require('koa-etag');
+    const proxy = require('koa-proxy');
 
-    admin.use( compress( {
-        flush: require( 'zlib' ).Z_SYNC_FLUSH
-    } ) );
-    admin.use( conditional() );
-    admin.use( etag());
-    admin.use(serve(__dirname + '/admin/',{
+
+    admin.use(compress({
+        flush: require('zlib').Z_SYNC_FLUSH
+    }));
+    admin.use(conditional());
+    admin.use(etag());
+    admin.use(serve(__dirname + '/admin/', {
         maxage: 31536000000
     }));
+
+    admin.use(proxy({
+        host: 'http://127.0.0.1:'+opt.servicePort,
+        match: /^\/.+$/
+    }));
+
     admin.listen(opt.adminPort || 8081);
     const wss = initWSS(admin, wsOpt);
     wss.on('connection', function connection(ws) {
