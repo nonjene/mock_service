@@ -16,8 +16,7 @@ A mock API data service for frontend development.
 * 后台我们录入的数据是存在本地的indexedDB。
 
 ##Demo
-先打开 [后台页面](http://knowsomething.us:3000/),
-然后访问 [API服务链接](http://knowsomething.us:3001/) 就可以在后台页面看到访问的信息。
+
 
 ##依赖
 需要有redis环境
