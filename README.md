@@ -2,10 +2,11 @@
 
 A mock API data service for frontend development. 
 
-提供一个UI后台用作前端开发的模拟前后端数据对接
+这个工具提供一个UI后台，可以利用浏览器的indexedDB数据库创建模拟数据，并匹配请求的路径返回数据。以用作前端开发的模拟前后端数据对接。
 
 ## 介绍
-* 使用流程大概是在前端项目运行一个代理服务, 代理指向API服务端口, 当有请求发来时, API服务自动把请求push到UI后台, 
+
+* 使用流程是前端项目通过链接的指向或者代理服务到本服务，当有请求发来时, 本服务将把请求通过ws push到后台页面，
 
 * 然后我们就可以在后台写一些测试数据发回给请求。 
 
@@ -15,10 +16,19 @@ A mock API data service for frontend development.
 
 * 后台我们录入的数据是存在本地的indexedDB。
 
-##Demo
+## Demo
+  
+  打开[后台页面demo](http://138.128.223.51:3000/#home)
 
+  切换到`自动匹配`, 选中`自动返回`，然后点击`新建 API`，在新增的空白卡片上，第一行添加`/some/api/request`, 第二行选择`数据例子`。
 
-##依赖
+  然后访问服务[http://138.128.223.51:3001/some/api/request](http://138.128.223.51:3001/some/api/request)
+
+  然后就能得到`数据例子`的数据内容`{"code":0, "msg":"success", "data":"hello world!"}`
+
+  可以切回`主面板`，左侧编辑好模拟数据之后，然后点击`新增到数据列表`，回到`自动匹配`即可选择刚才添加的数据了。
+
+## 依赖
 需要有redis环境
 MacOS上安装很简单, 以下命令:
 ```shell
@@ -29,7 +39,7 @@ brew install redis
 redis-server
 ```
 
-##使用
+## 使用
 可选两种使用方式:
 
 ### 方式一:直接clone代码
